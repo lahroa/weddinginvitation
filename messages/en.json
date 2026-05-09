@@ -1,0 +1,73 @@
+{
+  "hero": {
+    "nosCasamos": "We're getting married",
+    "scrollDown": "Scroll to discover"
+  },
+  "events": {
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds",
+    "itsToday": "It's today!",
+    "location": "Location",
+    "address": "Address",
+    "viewOnMaps": "View on Google Maps",
+    "connection": "Connection",
+    "subject": "Subject",
+    "description": "Description",
+    "joinLink": "Join meeting",
+    "confirmAttendance": "Confirm attendance",
+    "willAttend": "I will attend this event",
+    "companions": "Companions",
+    "maxCompanions": "max.",
+    "notes": "Notes",
+    "confirm": "Confirm attendance",
+    "thankYou": "Thank you for confirming!",
+    "attendanceRegistered": "Your attendance has been registered"
+  },
+  "invitation": {
+    "title": "Do you have an invitation code?",
+    "description": "If someone special shared a code with you, enter it to see additional information and confirm your attendance.",
+    "placeholder": "Ex: AB2C3DE",
+    "button": "Discover",
+    "invalid": "Invalid or revoked code",
+    "welcome": "Welcome, {name}"
+  },
+  "gallery": {
+    "title": "Our Story",
+    "subtitle": "Photo Gallery",
+    "addPhotos": "Add photos to album"
+  },
+  "support": {
+    "title": "How to Support",
+    "description": "Your presence is the best gift, but if you'd like to support us...",
+    "whatsapp": "Send WhatsApp message"
+  },
+  "music": {
+    "on": "Music on",
+    "off": "Music off"
+  },
+  "notifications": {
+    "noNew": "No new notifications"
+  },
+  "admin": {
+    "login": "Log in",
+    "password": "Password",
+    "logout": "Log out",
+    "dashboard": "Admin Panel",
+    "invitations": "Invitations",
+    "events": "Events",
+    "notifications": "Notifications",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "active": "Active",
+    "revoked": "Revoked",
+    "public": "Public",
+    "private": "Private",
+    "presencial": "In-person",
+    "virtual": "Virtual"
+  }
+}

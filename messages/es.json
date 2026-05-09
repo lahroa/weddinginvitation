@@ -1,0 +1,73 @@
+{
+  "hero": {
+    "nosCasamos": "Nos casamos",
+    "scrollDown": "Desliza para descubrir"
+  },
+  "events": {
+    "days": "días",
+    "hours": "horas",
+    "minutes": "minutos",
+    "seconds": "segundos",
+    "itsToday": "¡Es hoy!",
+    "location": "Lugar",
+    "address": "Dirección",
+    "viewOnMaps": "Ver en Google Maps",
+    "connection": "Conexión",
+    "subject": "Asunto",
+    "description": "Descripción",
+    "joinLink": "Unirse a la reunión",
+    "confirmAttendance": "Confirmar asistencia",
+    "willAttend": "Asistiré a este evento",
+    "companions": "Acompañantes",
+    "maxCompanions": "máx.",
+    "notes": "Notas",
+    "confirm": "Confirmar asistencia",
+    "thankYou": "¡Gracias por confirmar!",
+    "attendanceRegistered": "Tu asistencia ha sido registrada"
+  },
+  "invitation": {
+    "title": "¿Tienes un código de invitación?",
+    "description": "Si alguien especial te compartió un código, ingrésalo para ver información adicional y confirmar tu asistencia.",
+    "placeholder": "Ej: AB2C3DE",
+    "button": "Descubrir",
+    "invalid": "Código no válido o revocado",
+    "welcome": "Bienvenido, {name}"
+  },
+  "gallery": {
+    "title": "Nuestra Historia",
+    "subtitle": "Galería de momentos",
+    "addPhotos": "Agregar fotos al álbum"
+  },
+  "support": {
+    "title": "Cómo Apoyar",
+    "description": "Tu presencia es el mejor regalo, pero si deseas apoyarnos...",
+    "whatsapp": "Enviar mensaje por WhatsApp"
+  },
+  "music": {
+    "on": "Música encendida",
+    "off": "Música apagada"
+  },
+  "notifications": {
+    "noNew": "No hay notificaciones nuevas"
+  },
+  "admin": {
+    "login": "Iniciar sesión",
+    "password": "Contraseña",
+    "logout": "Cerrar sesión",
+    "dashboard": "Panel de Administración",
+    "invitations": "Invitaciones",
+    "events": "Eventos",
+    "notifications": "Notificaciones",
+    "create": "Crear",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "active": "Activa",
+    "revoked": "Revocada",
+    "public": "Público",
+    "private": "Privado",
+    "presencial": "Presencial",
+    "virtual": "Virtual"
+  }
+}

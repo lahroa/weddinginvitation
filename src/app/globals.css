@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    background-color: #FDF8F4;
+    color: #2D2D2D;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Scrollbar personalizada */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #FDF8F4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #C9A96E;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #B8944F;
+  }
+}
+
+@layer components {
+  /* Texto con gradiente dorado */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #C9A96E 0%, #D4B88C 50%, #B8944F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Animación de entrada */
+  .animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  /* Sombra elegante */
+  .shadow-elegant {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .shadow-elegant-hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+}
+
+@layer utilities {
+  /* Perspectiva para parallax */
+  .perspective-400 {
+    perspective: 400px;
+  }
+
+  /* Animaciones personalizadas */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes flip {
+    0% {
+      transform: rotateX(0deg);
+    }
+    50% {
+      transform: rotateX(-90deg);
+    }
+    100% {
+      transform: rotateX(0deg);
+    }
+  }
+
+  .animate-flip {
+    animation: flip 0.4s ease-in-out;
+  }
+
+  /* Parallax container */
+  .parallax-container {
+    perspective: 1px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
