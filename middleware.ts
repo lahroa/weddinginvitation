@@ -8,5 +8,12 @@ export default createMiddleware({
 });
 
 export const config = {
-  matcher: ['/', '/(es|en)/:path*']
+  matcher: [
+    // Rutas internacionalizadas
+    '/(es|en)/:path*',
+    // Raíz
+    '/',
+    // Excluir explícitamente rutas de API, archivos estáticos e internos de Next.js
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'
+  ]
 };

@@ -77,16 +77,11 @@ export default async function HomePage({ params, searchParams }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen">
-      <NotificationBanner token={token} />
-      <BackgroundMusic />
-      <ParallaxHero nombresNovios="Luis & Daniela" />
-
-      {invitadoNombre && (
-        <TokenBanner lang={lang} invitadoNombre={invitadoNombre} />
-      )}
-
-      <EventSection token={token} lang={lang} />
+<main className="min-h-screen m-0 p-0">
+  <NotificationBanner token={token} />
+  <BackgroundMusic />
+  <ParallaxHero nombresNovios="Luis & Daniela" invitadoNombre={invitadoNombre} />
+  <EventSection token={token} lang={lang} />
 
       {!token && (
         <>

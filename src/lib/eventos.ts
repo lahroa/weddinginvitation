@@ -54,30 +54,42 @@ export async function createEvento(data: EventoInput): Promise<Evento> {
 }
 
 export async function updateEvento(id: string, data: Partial<EventoInput>): Promise<Evento | null> {
-  // Construir query dinámica usando template literal de SQL
-  const fields: string[] = [];
-  
-  if (data.nombre !== undefined) fields.push(`nombre = '${data.nombre.replace(/'/g, "''")}'`);
-  if (data.fecha_hora !== undefined) fields.push(`fecha_hora = '${data.fecha_hora}'`);
-  if (data.es_publico !== undefined) fields.push(`es_publico = ${data.es_publico}`);
-  if (data.permite_rsvp !== undefined) fields.push(`permite_rsvp = ${data.permite_rsvp}`);
-  if (data.tipo_evento !== undefined) fields.push(`tipo_evento = '${data.tipo_evento}'`);
-  if (data.lugar_publico !== undefined) fields.push(`lugar_publico = ${data.lugar_publico ? `'${data.lugar_publico.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.direccion_privada !== undefined) fields.push(`direccion_privada = ${data.direccion_privada ? `'${data.direccion_privada.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.maps_link !== undefined) fields.push(`maps_link = ${data.maps_link ? `'${data.maps_link.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.asunto_virtual !== undefined) fields.push(`asunto_virtual = ${data.asunto_virtual ? `'${data.asunto_virtual.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.descripcion_virtual !== undefined) fields.push(`descripcion_virtual = ${data.descripcion_virtual ? `'${data.descripcion_virtual.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.link_virtual !== undefined) fields.push(`link_virtual = ${data.link_virtual ? `'${data.link_virtual.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.background_image !== undefined) fields.push(`background_image = ${data.background_image ? `'${data.background_image.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.background_type !== undefined) fields.push(`background_type = '${data.background_type}'`);
-  if (data.gradient_css !== undefined) fields.push(`gradient_css = ${data.gradient_css ? `'${data.gradient_css.replace(/'/g, "''")}'` : 'NULL'}`);
-  if (data.lottie_icon_url !== undefined) fields.push(`lottie_icon_url = ${data.lottie_icon_url ? `'${data.lottie_icon_url.replace(/'/g, "''")}'` : 'NULL'}`);
+  const current = await getEventoById(id);
+  if (!current) return null;
 
-  if (fields.length === 0) return getEventoById(id);
+  const nombre = data.nombre ?? current.nombre;
+  const fecha_hora = data.fecha_hora ?? current.fecha_hora;
+  const es_publico = data.es_publico ?? current.es_publico;
+  const permite_rsvp = data.permite_rsvp ?? current.permite_rsvp;
+  const tipo_evento = data.tipo_evento ?? current.tipo_evento;
+  const lugar_publico = data.lugar_publico !== undefined ? data.lugar_publico : current.lugar_publico;
+  const direccion_privada = data.direccion_privada !== undefined ? data.direccion_privada : current.direccion_privada;
+  const maps_link = data.maps_link !== undefined ? data.maps_link : current.maps_link;
+  const asunto_virtual = data.asunto_virtual !== undefined ? data.asunto_virtual : current.asunto_virtual;
+  const descripcion_virtual = data.descripcion_virtual !== undefined ? data.descripcion_virtual : current.descripcion_virtual;
+  const link_virtual = data.link_virtual !== undefined ? data.link_virtual : current.link_virtual;
+  const background_image = data.background_image !== undefined ? data.background_image : current.background_image;
+  const background_type = data.background_type ?? current.background_type;
+  const gradient_css = data.gradient_css !== undefined ? data.gradient_css : current.gradient_css;
+  const lottie_icon_url = data.lottie_icon_url !== undefined ? data.lottie_icon_url : current.lottie_icon_url;
 
   const result = await sql`
-    UPDATE eventos 
-    SET ${sql(fields.join(', '))}
+    UPDATE eventos SET
+      nombre = ${nombre},
+      fecha_hora = ${fecha_hora},
+      es_publico = ${es_publico},
+      permite_rsvp = ${permite_rsvp},
+      tipo_evento = ${tipo_evento},
+      lugar_publico = ${lugar_publico},
+      direccion_privada = ${direccion_privada},
+      maps_link = ${maps_link},
+      asunto_virtual = ${asunto_virtual},
+      descripcion_virtual = ${descripcion_virtual},
+      link_virtual = ${link_virtual},
+      background_image = ${background_image},
+      background_type = ${background_type},
+      gradient_css = ${gradient_css},
+      lottie_icon_url = ${lottie_icon_url}
     WHERE id = ${id}
     RETURNING *
   `;

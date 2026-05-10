@@ -1,6 +1,4 @@
 import { getEventosPublicos } from '@/lib/eventos';
-import { getInvitacionByToken } from '@/lib/invitaciones';
-import { getAsistenciaByInvitacion } from '@/lib/asistencias';
 import EventCard from './EventCard';
 import { Evento } from '@/types';
 
@@ -10,68 +8,55 @@ interface EventSectionProps {
 }
 
 export default async function EventSection({ token, lang }: EventSectionProps) {
-  let eventosPrivados: Evento[] = [];
-  let invitacionData = null;
-  let asistencias: Record<string, { asistira: boolean; num_acompanantes: number }> = {};
-  let acompanantesUsados = 0;
+  let allEventos: Evento[] = [];
 
-  // Obtener eventos públicos (siempre visibles)
-  const eventosPublicos = await getEventosPublicos();
-
-  // Si hay token, obtener invitación y eventos privados
-  if (token) {
-    const invitacion = await getInvitacionByToken(token);
-    
-    if (invitacion) {
-      invitacionData = invitacion;
-      eventosPrivados = invitacion.eventos_detalle as unknown as Evento[];
+  try {
+    if (token) {
+      const { getInvitacionByToken } = await import('@/lib/invitaciones');
+      const { getEventosByInvitacion } = await import('@/lib/eventos');
       
-      // Obtener asistencias previas
-      const asistenciasData = await getAsistenciaByInvitacion(invitacion.id);
+      const invitacion = await getInvitacionByToken(token);
+      const eventosPublicos = await getEventosPublicos();
       
-      for (const a of asistenciasData) {
-        asistencias[a.evento_id] = {
-          asistira: a.asistira,
-          num_acompanantes: a.num_acompanantes,
-        };
-        if (a.asistira) {
-          acompanantesUsados += a.num_acompanantes;
-        }
+      if (invitacion) {
+        const eventosPrivados = await getEventosByInvitacion(invitacion.id);
+        allEventos = [...eventosPublicos, ...eventosPrivados];
+      } else {
+        allEventos = eventosPublicos;
       }
+    } else {
+      allEventos = await getEventosPublicos();
     }
-  }
-
-  // Construir lista combinada
-  const allEventos: Array<{ evento: Evento; isPrivate: boolean; isAssigned: boolean }> = [
-    ...eventosPublicos.map(e => ({ evento: e, isPrivate: false, isAssigned: true })),
-    ...eventosPrivados.map(e => ({ evento: e, isPrivate: true, isAssigned: true })),
-  ];
-
-  // Ordenar por fecha
-  allEventos.sort((a, b) => new Date(a.evento.fecha_hora).getTime() - new Date(b.evento.fecha_hora).getTime());
-
-  if (allEventos.length === 0) {
+  } catch {
     return null;
   }
 
-  return (
-    <section className="relative">
-      {allEventos.map(({ evento, isPrivate, isAssigned }) => {
-        const showPrivateInfo = !isPrivate || isAssigned;
-        const rsvpData = asistencias[evento.id] || null;
+  allEventos.sort((a, b) => new Date(a.fecha_hora).getTime() - new Date(b.fecha_hora).getTime());
 
-        return (
-          <EventCard
-            key={evento.id}
-            evento={evento}
-            showPrivateInfo={showPrivateInfo}
-            token={token}
-            maxAcompanantes={invitacionData?.max_acompanantes || 0}
-            acompanantesYaUsados={acompanantesUsados}
-            rsvpData={rsvpData}
-          />
-        );
-      })}
-    </section>
+  if (allEventos.length === 0) {
+    return (
+      <section className="min-h-screen flex items-center justify-center bg-cream">
+        <div className="text-center px-4">
+          <div className="text-5xl mb-6">📅</div>
+          <h2 className="font-serif text-3xl text-gold mb-4">Próximamente</h2>
+          <p className="font-sans text-dark/50">
+            Los eventos serán anunciados pronto.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <>
+      {allEventos.map((evento) => (
+        <EventCard
+          key={evento.id}
+          evento={evento}
+          showPrivateInfo={evento.es_publico || !!token}
+          token={token}
+        />
+      ))}
+    </>
   );
 }

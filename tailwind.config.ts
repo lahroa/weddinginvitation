@@ -7,20 +7,26 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: '#FDF8F4',
-        dark: '#2D2D2D',
-        gold: '#C9A96E',
-        'gold-light': '#D4B88C',
-        'gold-dark': '#B8944F',
-        rose: '#D4A5A5',
-        'rose-light': '#E8C5C5',
-        sage: '#9CAF88',
-        'sage-light': '#B5C4A3',
+        cream: 'var(--color-cream)',
+        dark: 'var(--color-dark)',
+        gold: {
+          DEFAULT: 'var(--color-gold)',
+          light: 'var(--color-gold-light)',
+          dark: 'var(--color-gold-dark)',
+        },
+        rose: {
+          DEFAULT: 'var(--color-rose)',
+          light: 'var(--color-rose-light)',
+        },
+        sage: {
+          DEFAULT: 'var(--color-sage)',
+          light: 'var(--color-sage-light)',
+        },
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',

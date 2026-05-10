@@ -2,16 +2,27 @@ import { z } from 'zod';
 
 export const eventoInputSchema = z.object({
   nombre: z.string().min(1, 'El nombre es requerido'),
-  fecha_hora: z.string().datetime('Fecha inválida'),
+  fecha_hora: z.string().refine(
+    (val) => {
+      // Validar formato ISO 8601 con o sin zona horaria
+      const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?([+-]\d{2}:\d{2})?$/;
+      if (!isoRegex.test(val)) return false;
+      
+      // Validar que sea una fecha real
+      const date = new Date(val);
+      return !isNaN(date.getTime());
+    },
+    { message: 'Fecha inválida. Formato esperado: YYYY-MM-DDTHH:mm:ss±HH:MM' }
+  ),
   es_publico: z.boolean(),
   permite_rsvp: z.boolean(),
   tipo_evento: z.enum(['presencial', 'virtual']),
   lugar_publico: z.string().nullable().optional(),
   direccion_privada: z.string().nullable().optional(),
-  maps_link: z.string().url('URL inválida').nullable().optional().or(z.literal('')),
+  maps_link: z.string().nullable().optional(),
   asunto_virtual: z.string().nullable().optional(),
   descripcion_virtual: z.string().nullable().optional(),
-  link_virtual: z.string().url('URL inválida').nullable().optional().or(z.literal('')),
+  link_virtual: z.string().nullable().optional(),
   background_image: z.string().nullable().optional(),
   background_type: z.enum(['image', 'gradient']).optional().default('image'),
   gradient_css: z.string().nullable().optional(),
@@ -37,12 +48,12 @@ export const eventoInputSchema = z.object({
 export const invitacionInputSchema = z.object({
   nombre_invitado: z.string().min(1, 'El nombre es requerido'),
   max_acompanantes: z.number().int().min(0, 'Debe ser 0 o más').max(20, 'Máximo 20'),
-  eventos_ids: z.array(z.string().uuid('ID de evento inválido')),
+  eventos_ids: z.array(z.string()),
 });
 
 export const asistenciaInputSchema = z.object({
   token: z.string().length(7, 'Token inválido'),
-  evento_id: z.string().uuid('ID de evento inválido'),
+  evento_id: z.string(),
   asistira: z.boolean(),
   num_acompanantes: z.number().int().min(0).max(20).optional().default(0),
   notas: z.string().max(500).optional(),
@@ -51,8 +62,8 @@ export const asistenciaInputSchema = z.object({
 export const notificacionInputSchema = z.object({
   mensaje: z.string().min(1, 'El mensaje no puede estar vacío').max(1000),
   tipo_destino: z.enum(['todos', 'evento', 'invitacion']),
-  evento_id: z.string().uuid().nullable().optional(),
-  invitacion_id: z.string().uuid().nullable().optional(),
+  evento_id: z.string().nullable().optional(),
+  invitacion_id: z.string().nullable().optional(),
 }).refine((data) => {
   if (data.tipo_destino === 'evento') return !!data.evento_id;
   if (data.tipo_destino === 'invitacion') return !!data.invitacion_id;

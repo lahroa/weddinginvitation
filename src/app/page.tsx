@@ -6,16 +6,13 @@ export default function RootPage() {
   const headersList = headers();
   const acceptLanguage = headersList.get('accept-language') || '';
   
-  // Detectar idioma del navegador
-  let detectedLocale = defaultLocale;
+  let detectedLocale: typeof locales[number] = defaultLocale;
   
   if (acceptLanguage) {
-    // Tomar el primer idioma de la lista
-    const browserLang = acceptLanguage.split(',')[0].split('-')[0];
+    const browserLang = acceptLanguage.split(',')[0]?.split('-')[0];
     
-    // Verificar si existe en nuestros locales
-    if (locales.includes(browserLang as typeof locales[number])) {
-      detectedLocale = browserLang;
+    if (browserLang && locales.includes(browserLang as typeof locales[number])) {
+      detectedLocale = browserLang as typeof locales[number];
     }
   }
   

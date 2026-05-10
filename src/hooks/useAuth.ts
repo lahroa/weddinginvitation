@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 export function useAuth() {
@@ -9,15 +9,16 @@ export function useAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    // Verificar si hay cookie de sesión válida
+    // Verificar sesión llamando a un endpoint protegido
     const checkAuth = async () => {
       try {
-        const res = await fetch('/api/eventos');
-        if (res.status === 401) {
-          setIsAuthenticated(false);
-        } else {
-          setIsAuthenticated(true);
-        }
+        const res = await fetch('/api/invitaciones', {
+          credentials: 'include', // Enviar cookies
+        });
+        
+        // Si es 401, no está autenticado
+        // Si es 200, está autenticado
+        setIsAuthenticated(res.ok);
       } catch {
         setIsAuthenticated(false);
       } finally {
@@ -28,12 +29,13 @@ export function useAuth() {
     checkAuth();
   }, []);
 
-  const login = async (password: string): Promise<boolean> => {
+  const login = useCallback(async (password: string): Promise<boolean> => {
     try {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
+        credentials: 'include',
       });
       
       const data = await res.json();
@@ -47,13 +49,16 @@ export function useAuth() {
     } catch {
       return false;
     }
-  };
+  }, []);
 
-  const logout = async () => {
-    document.cookie = 'admin_session=; path=/; max-age=0';
+  const logout = useCallback(async () => {
+    await fetch('/api/admin/logout', { 
+      method: 'POST',
+      credentials: 'include' 
+    });
     setIsAuthenticated(false);
-    router.push('/');
-  };
+    router.push('/es');
+  }, [router]);
 
   return { isAuthenticated, isLoading, login, logout };
 }
