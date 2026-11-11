@@ -8,6 +8,7 @@ import Spinner from '@/components/ui/Spinner';
 import Modal from '@/components/ui/Modal';
 import InvitacionForm from './InvitacionForm';
 import Toast from '@/components/ui/Toast';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 export default function InvitacionesList() {
   const [invitaciones, setInvitaciones] = useState<InvitacionConEventos[]>([]);
@@ -107,7 +108,7 @@ export default function InvitacionesList() {
       {/* Lista */}
       {invitaciones.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-xl">
-          <div className="text-5xl mb-4">💌</div>
+          <MaterialIcon name="mail" className="w-12 h-12 mx-auto mb-4 text-primary" />
           <p className="font-serif text-xl text-dark/50">No hay invitaciones aún</p>
           <p className="font-sans text-dark/30 mt-2">Crea la primera invitación para empezar</p>
         </div>
@@ -152,7 +153,10 @@ export default function InvitacionesList() {
                     variant="ghost"
                     onClick={() => copyLink(inv.token)}
                   >
-                    📋 Copiar
+                    <span className="inline-flex items-center gap-1">
+                      <MaterialIcon name="copy" className="w-4 h-4" />
+                      Copiar
+                    </span>
                   </Button>
                   <Button
                     size="sm"

@@ -3,17 +3,23 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ParticlesCanvas from './ParticlesCanvas';
 import { useTranslations } from 'next-intl';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface ParallaxHeroProps {
   nombresNovios: string;
+  fechaTexto: string;
   invitadoNombre?: string | null;
 }
 
-export default function ParallaxHero({ nombresNovios, invitadoNombre }: ParallaxHeroProps) {
+/**
+ * Hero a pantalla completa compuesto por tres capas fotográficas:
+ * fondo, capa intermedia y capa fija. Los nombres, la fecha y el aviso
+ * de deslizar viven en la franja inferior sobre un degradado oscuro.
+ */
+export default function ParallaxHero({ nombresNovios, fechaTexto, invitadoNombre }: ParallaxHeroProps) {
   const t = useTranslations('hero');
   const sectionRef = useRef<HTMLElement>(null);
   const fondoRef = useRef<HTMLDivElement>(null);
@@ -22,11 +28,11 @@ export default function ParallaxHero({ nombresNovios, invitadoNombre }: Parallax
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Fondo parallax sutil
-      gsap.fromTo(fondoRef.current,
-        { y: 0 },
+      gsap.fromTo(
+        fondoRef.current,
+        { yPercent: 0 },
         {
-          y: '8%',
+          yPercent: 6,
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -37,11 +43,11 @@ export default function ParallaxHero({ nombresNovios, invitadoNombre }: Parallax
         }
       );
 
-      // Capa de contenido con movimiento más pronunciado
-      gsap.fromTo(parejaRef.current,
-        { y: 0 },
+      gsap.fromTo(
+        parejaRef.current,
+        { yPercent: 0 },
         {
-          y: '20%',
+          yPercent: -4,
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -52,107 +58,81 @@ export default function ParallaxHero({ nombresNovios, invitadoNombre }: Parallax
         }
       );
 
-      // Texto se desvanece al hacer scroll
-      gsap.to(textoRef.current, {
-        opacity: 0.3,
-        y: -30,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'center top',
-          scrub: 1,
-        },
-      });
+      gsap.fromTo(
+        textoRef.current,
+        { opacity: 1, y: 0 },
+        {
+          opacity: 0.35,
+          y: -16,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'center top',
+            scrub: 1,
+          },
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen overflow-hidden bg-cream m-0 p-0">
-      {/* Capa fondo */}
-      <div
-        ref={fondoRef}
-        className="absolute inset-0 w-full h-full"
-        style={{
-          backgroundImage: 'url(/images/hero/fondo.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          backgroundRepeat: 'no-repeat',
-          willChange: 'transform',
-        }}
-      >
-        <div className="absolute inset-0 bg-cream/20" />
-      </div>
+    <section
+      ref={sectionRef}
+      className="hero-viewport relative isolate w-full overflow-hidden bg-primary m-0 p-0"
+    >
+      {/* Capa 1: foto de fondo */}
+      <div ref={fondoRef} className="hero-layer hero-layer-back" aria-hidden="true" />
 
-      {/* Partículas */}
-      <ParticlesCanvas />
+      {/* Capa 2: foto intermedia */}
+      <div ref={parejaRef} className="hero-layer hero-layer-mid" aria-hidden="true" />
 
-      {/* Capa contenido centrado */}
-      <div
-        ref={parejaRef}
-        className="absolute inset-0 flex flex-col items-center justify-center w-full h-full px-4"
-        style={{ willChange: 'transform' }}
-      >
-        <div ref={textoRef} className="text-center">
-          {/* Invitación */}
-          {invitadoNombre && (
-            <div className="mb-6 md:mb-8">
-              <div className="inline-block bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 mb-4 shadow-md">
-                <span className="font-sans text-sm text-gold tracking-wider uppercase">
-                  ✨ Invitación especial para
+      {/* Capa 3: foto fija (se mantiene fija mientras se hace scroll) */}
+      <div className="hero-layer hero-layer-fixed" aria-hidden="true" />
+
+      {/* Oscurecido general: da unidad a las capas y contraste al texto */}
+      <div className="hero-shade absolute inset-0" aria-hidden="true" />
+
+      {/* Nombres, fecha y aviso de deslizar */}
+      <div className="absolute inset-x-0 bottom-0 z-20">
+        <div className="hero-bottom-bar px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-24 md:pt-28">
+          <div ref={textoRef} className="mx-auto max-w-3xl text-center">
+            {invitadoNombre && (
+              <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-2 backdrop-blur-sm">
+                <MaterialIcon name="favorite" className="h-3.5 w-3.5 shrink-0 text-accent-2" />
+                <span className="truncate font-sans text-[10px] uppercase tracking-[0.22em] text-light sm:text-[11px]">
+                  {t('specialInvite')} · {invitadoNombre}
                 </span>
               </div>
-              <h2 className="font-serif text-3xl md:text-4xl text-dark mt-3">
-                {invitadoNombre}
-              </h2>
-            </div>
-          )}
+            )}
 
-          {/* Imagen pareja */}
-          <div className="relative mb-8 md:mb-10 mx-auto w-48 h-48 md:w-64 md:h-64">
-            <div className="w-full h-full rounded-full overflow-hidden border-4 border-white/40 shadow-xl bg-gold/10 flex items-center justify-center">
-              <img
-                src="/images/hero/pareja.webp"
-                alt={nombresNovios}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  target.parentElement!.querySelector('span')!.style.display = 'flex';
-                }}
-              />
-              <span className="text-5xl hidden">💑</span>
+            <p className="font-sans text-[10px] uppercase tracking-[0.38em] text-light sm:text-xs">
+              {t('nosCasamos')}
+            </p>
+
+            <h1 className="mt-3 font-serif text-[2.75rem] leading-[1.05] text-light drop-shadow-[0_4px_28px_rgba(0,0,0,0.6)] sm:text-6xl md:text-7xl lg:text-8xl">
+              {nombresNovios}
+            </h1>
+
+            <div className="mt-5 flex items-center justify-center gap-3 md:gap-4">
+              <span className="h-px w-8 bg-accent md:w-12" />
+              <span className="font-serif text-lg tracking-[0.18em] text-light md:text-2xl">
+                {fechaTexto}
+              </span>
+              <span className="h-px w-8 bg-accent md:w-12" />
             </div>
-            <div className="absolute -inset-4 rounded-full border-2 border-gold/20 animate-pulse-soft pointer-events-none" />
           </div>
 
-          {/* Nombres */}
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-gold leading-tight mb-3">
-            {nombresNovios}
-          </h1>
-
-          {/* Nos casamos */}
-          <p className="font-sans text-base md:text-xl text-dark/50 tracking-[0.2em] uppercase">
-            {t('nosCasamos')}
-          </p>
-
-          {/* Fecha */}
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <div className="w-6 h-px bg-gold/40" />
-            <span className="font-serif text-lg md:text-2xl text-dark/50">27 · 07 · 2026</span>
-            <div className="w-6 h-px bg-gold/40" />
+          <div className="mt-8 flex flex-col items-center gap-2 md:mt-10">
+            <span className="font-sans text-[9px] uppercase tracking-[0.32em] text-light sm:text-[10px]">
+              {t('scrollDown')}
+            </span>
+            <span className="relative block h-9 w-px overflow-hidden bg-white/20">
+              <span className="absolute inset-x-0 top-0 h-3 animate-bounce bg-accent-2" />
+            </span>
           </div>
-        </div>
-      </div>
-
-      {/* Indicador scroll */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
-        <span className="font-sans text-xs text-dark/40 tracking-widest uppercase">
-          {t('scrollDown')}
-        </span>
-        <div className="w-px h-8 bg-gold/30 rounded-full overflow-hidden">
-          <div className="w-full h-3 bg-gold rounded-full animate-bounce" />
         </div>
       </div>
     </section>

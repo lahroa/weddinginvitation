@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 import Toast from '@/components/ui/Toast';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface EventRSVPProps {
   token: string;
@@ -64,13 +65,13 @@ export default function EventRSVP({
     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 md:p-8 max-w-md mx-auto border border-white/20">
       {success ? (
         <div className="text-center py-4">
-          <div className="text-5xl mb-4">✅</div>
-          <p className="font-serif text-2xl text-white mb-2">¡Gracias!</p>
-          <p className="font-sans text-white/70">{t('attendanceRegistered')}</p>
+          <MaterialIcon name="checkCircle" className="w-12 h-12 mx-auto mb-4 text-light" />
+          <p className="font-serif text-2xl text-light mb-2">¡Gracias!</p>
+          <p className="font-sans text-light">{t('attendanceRegistered')}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <h3 className="font-serif text-xl text-white text-center mb-6">
+          <h3 className="font-serif text-xl text-light text-center mb-6">
             {t('confirmAttendance')}
           </h3>
 
@@ -84,40 +85,40 @@ export default function EventRSVP({
               />
               <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
                 asistira 
-                  ? 'bg-gold border-gold' 
+                  ? 'bg-primary border-primary' 
                   : 'border-white/50 group-hover:border-white'
               }`}>
                 {asistira && (
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 )}
               </div>
             </div>
-            <span className="font-sans text-white">{t('willAttend')}</span>
+            <span className="font-sans text-light">{t('willAttend')}</span>
           </label>
 
           {asistira && (
             <>
               <div className="mb-6 animate-fade-in">
-                <label className="block font-sans text-sm text-white/70 mb-2">
+                <label className="block font-sans text-sm text-light mb-2">
                   {t('companions')} ({t('maxCompanions')} {maxAcompanantes})
                 </label>
                 <div className="flex items-center justify-center gap-4">
                   <button
                     type="button"
                     onClick={() => setNumAcompanantes(Math.max(0, numAcompanantes - 1))}
-                    className="w-10 h-10 rounded-full border-2 border-white/50 text-white flex items-center justify-center hover:bg-white/10 transition-colors text-xl"
+                    className="w-10 h-10 rounded-full border-2 border-accent-2/70 bg-primary text-light flex items-center justify-center hover:bg-primary/80 transition-colors text-xl"
                   >
                     −
                   </button>
-                  <span className="font-mono text-2xl text-white min-w-[3ch] text-center">
+                  <span className="font-mono text-2xl text-light min-w-[3ch] text-center">
                     {numAcompanantes}
                   </span>
                   <button
                     type="button"
                     onClick={() => setNumAcompanantes(Math.min(disponibles, numAcompanantes + 1))}
-                    className="w-10 h-10 rounded-full border-2 border-white/50 text-white flex items-center justify-center hover:bg-white/10 transition-colors text-xl"
+                    className="w-10 h-10 rounded-full border-2 border-accent-2/70 bg-primary text-light flex items-center justify-center hover:bg-primary/80 transition-colors text-xl"
                   >
                     +
                   </button>
@@ -128,7 +129,7 @@ export default function EventRSVP({
                 <textarea
                   value={notas}
                   onChange={(e) => setNotas(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 font-sans text-sm resize-none focus:outline-none focus:border-white/50"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-light placeholder:text-light/70 font-sans text-sm resize-none focus:outline-none focus:border-white/50"
                   rows={2}
                   maxLength={500}
                   placeholder="Alergias, restricciones alimenticias..."

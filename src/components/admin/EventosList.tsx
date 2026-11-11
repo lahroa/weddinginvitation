@@ -8,6 +8,7 @@ import Spinner from '@/components/ui/Spinner';
 import Modal from '@/components/ui/Modal';
 import EventoForm from './EventoForm';
 import Toast from '@/components/ui/Toast';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 export default function EventosList() {
   const [eventos, setEventos] = useState<Evento[]>([]);
@@ -77,7 +78,7 @@ export default function EventosList() {
 
       {eventos.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-xl">
-          <div className="text-5xl mb-4">📅</div>
+          <MaterialIcon name="calendar" className="w-12 h-12 mx-auto mb-4 text-primary" />
           <p className="font-serif text-xl text-dark/50">No hay eventos aún</p>
           <p className="font-sans text-dark/30 mt-2">Crea tu primer evento</p>
         </div>
@@ -91,9 +92,10 @@ export default function EventosList() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-2xl">
-                      {evento.tipo_evento === 'presencial' ? '📍' : '💻'}
-                    </span>
+                    <MaterialIcon
+                      name={evento.tipo_evento === 'presencial' ? 'location' : 'computer'}
+                      className="w-6 h-6 text-primary"
+                    />
                     <h3 className="font-sans font-medium text-dark text-lg">
                       {evento.nombre}
                     </h3>
@@ -131,7 +133,10 @@ export default function EventosList() {
 
                   {evento.lottie_icon_url && (
                     <p className="font-sans text-xs text-dark/30 mt-2">
-                      🎬 Animación: {evento.lottie_icon_url}
+                      <span className="inline-flex items-center gap-1">
+                        <MaterialIcon name="video" className="w-4 h-4" />
+                        Animación: {evento.lottie_icon_url}
+                      </span>
                     </p>
                   )}
                 </div>

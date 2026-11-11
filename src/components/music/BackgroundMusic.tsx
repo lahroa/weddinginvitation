@@ -3,6 +3,7 @@
 import { useMusic } from '@/hooks/useMusic';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 export default function BackgroundMusic() {
   const t = useTranslations('music');
@@ -19,23 +20,24 @@ export default function BackgroundMusic() {
     >
       <button
         onClick={toggleMusic}
-        className="relative group"
+        className="relative group min-w-11 min-h-11"
         aria-label={isPlaying ? t('off') : t('on')}
       >
         {/* Círculo exterior con pulso */}
-        <div className={`absolute inset-0 rounded-full bg-gold/20 ${
+        <div className={`absolute inset-0 rounded-full bg-accent/20 ${
           isPlaying ? 'animate-ping' : ''
         }`} />
 
         {/* Botón principal */}
-        <div className="relative w-14 h-14 rounded-full bg-white shadow-xl border-2 border-gold/30 
+        <div className="relative w-14 h-14 rounded-full bg-primary shadow-xl border-2 border-accent-2/70 
                         flex items-center justify-center
-                        hover:border-gold hover:shadow-2xl
+                        hover:border-accent-2 hover:shadow-2xl
                         transition-all duration-300">
           {/* Icono */}
-          <span className="text-2xl">
-            {isPlaying ? '🔊' : '🔇'}
-          </span>
+          <MaterialIcon
+            name={isPlaying ? 'volumeUp' : 'volumeOff'}
+            className="w-6 h-6 text-light"
+          />
 
           {/* Barras de ecualizador */}
           <AnimatePresence>
@@ -44,7 +46,7 @@ export default function BackgroundMusic() {
                 {[2, 3, 1, 4, 2].map((height, i) => (
                   <motion.div
                     key={i}
-                    className="w-1 bg-gold rounded-full"
+                    className="w-1 bg-accent rounded-full"
                     initial={{ height: 2 }}
                     animate={{ height: height * 3 }}
                     transition={{
@@ -61,11 +63,11 @@ export default function BackgroundMusic() {
         </div>
 
         {/* Tooltip */}
-        <div className="absolute bottom-full right-0 mb-3 px-3 py-1.5 bg-dark text-white text-xs font-sans 
+        <div className="absolute bottom-full right-0 mb-3 px-3 py-1.5 bg-primary text-light text-xs font-sans 
                         rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap
                         pointer-events-none">
           {isPlaying ? t('off') : t('on')}
-          <div className="absolute top-full right-4 w-2 h-2 bg-dark rotate-45 -mt-1" />
+          <div className="absolute top-full right-4 w-2 h-2 bg-primary rotate-45 -mt-1" />
         </div>
       </button>
     </motion.div>

@@ -22,10 +22,10 @@ export default function Button({
   const baseStyles = 'inline-flex items-center justify-center font-sans font-medium rounded-lg transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100';
   
   const variants = {
-    primary: 'bg-gold text-white hover:bg-gold-dark shadow-lg hover:shadow-xl',
-    secondary: 'bg-sage text-white hover:bg-sage-light',
-    outline: 'border-2 border-gold text-gold hover:bg-gold hover:text-white',
-    ghost: 'text-dark hover:bg-cream',
+    primary: 'bg-primary text-light hover:bg-primary/90 shadow-lg hover:shadow-xl',
+    secondary: 'bg-primary text-light hover:bg-primary/90',
+    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-light',
+    ghost: 'text-primary hover:bg-accent-2/30',
   };
 
   const sizes = {

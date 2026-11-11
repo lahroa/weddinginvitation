@@ -7,7 +7,6 @@ import TokenBanner from '@/components/invitation/TokenBanner';
 import SupportSection from '@/components/support/SupportSection';
 import BackgroundMusic from '@/components/music/BackgroundMusic';
 import NotificationBanner from '@/components/notifications/NotificationBanner';
-import Divider from '@/components/ui/Divider';
 import { getInvitacionByToken } from '@/lib/invitaciones';
 import type { Metadata } from 'next';
 
@@ -53,9 +52,30 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   };
 }
 
+const NOMBRES_NOVIOS = process.env.NEXT_PUBLIC_NOMBRES_NOVIOS || 'Luis & Daniela';
+const FECHA_BODA = process.env.NEXT_PUBLIC_FECHA_BODA || '2026-07-27T16:00:00-04:00';
+
+function formatFechaBoda(iso: string): string {
+  const fecha = new Date(iso);
+  if (Number.isNaN(fecha.getTime())) return iso;
+
+  return new Intl.DateTimeFormat('es-VE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    timeZone: 'America/Caracas',
+  })
+    .format(fecha)
+    .replace(/[/.]/g, ' · ')
+    .trim();
+}
+
 export default async function HomePage({ params, searchParams }: PageProps) {
   const { lang } = await params;
   const { invitacion } = await searchParams;
+
+  const nombresNovios = NOMBRES_NOVIOS;
+  const fechaTexto = formatFechaBoda(FECHA_BODA);
 
   
   // Habilitar renderizado estático para next-intl
@@ -77,41 +97,34 @@ export default async function HomePage({ params, searchParams }: PageProps) {
   }
 
   return (
-<main className="min-h-screen m-0 p-0">
-  <NotificationBanner token={token} />
-  <BackgroundMusic />
-  <ParallaxHero nombresNovios="Luis & Daniela" invitadoNombre={invitadoNombre} />
-  <EventSection token={token} lang={lang} />
+    <main className="min-h-screen m-0 p-0">
+      <NotificationBanner token={token} />
+      <BackgroundMusic />
 
-      {!token && (
-        <>
-          <Divider />
-          <TokenBanner lang={lang} />
-        </>
-      )}
+      <ParallaxHero
+        nombresNovios={nombresNovios}
+        fechaTexto={fechaTexto}
+        invitadoNombre={invitadoNombre}
+      />
 
-      <Divider />
+      <EventSection token={token} lang={lang} />
+
+      {!token && <TokenBanner lang={lang} />}
+
       <GalleryGrid />
-      <Divider />
+
       <SupportSection />
 
-      <footer className="py-10 px-4 text-center bg-cream">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="w-8 h-px bg-gold/20" />
-            <span className="text-gold/30 text-lg">❦</span>
-            <div className="w-8 h-px bg-gold/20" />
-          </div>
-          <p className="font-serif text-gold/40 text-sm tracking-wider">
-            Luis & Daniela
-          </p>
-          <p className="font-sans text-dark/20 text-xs mt-1">
-            27 · 07 · 2026
-          </p>
-          <p className="font-sans text-dark/15 text-xs mt-3">
-            Hecho con ❤️ para celebrar el amor
-          </p>
-        </div>
+      <footer className="bg-primary px-6 pb-10 pt-12 text-center">
+        <p className="font-serif text-base tracking-[0.3em] text-light">
+          {nombresNovios}
+        </p>
+        <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.28em] text-light">
+          {fechaTexto}
+        </p>
+        <p className="mt-4 font-sans text-[11px] text-light">
+          Hecho con cariño para celebrar el amor
+        </p>
       </footer>
     </main>
   );

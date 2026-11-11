@@ -3,22 +3,26 @@
 @tailwind utilities;
 
 :root {
-  /* Colores base */
-  --color-cream: #FDF8F4;
-  --color-dark: #2D2D2D;
-  --color-gold: #C9A96E;
-  --color-gold-light: #D4B88C;
-  --color-gold-dark: #B8944F;
-  --color-rose: #D4A5A5;
-  --color-rose-light: #E8C5C5;
-  --color-sage: #9CAF88;
-  --color-sage-light: #B5C4A3;
-  --color-white: #FFFFFF;
-  --color-black: #000000;
+  --color-primary: #061D3B;
+  --color-accent: #C27987;
+  --color-accent-2: #FAD1D9;
+  --color-light: #E3E7D8;
+
+  --color-cream: var(--color-light);
+  --color-dark: var(--color-primary);
+  --color-gold: var(--color-accent);
+  --color-gold-light: var(--color-accent-2);
+  --color-gold-dark: var(--color-accent);
+  --color-rose: var(--color-accent);
+  --color-rose-light: var(--color-accent-2);
+  --color-sage: var(--color-accent-2);
+  --color-sage-light: var(--color-light);
+  --color-white: var(--color-light);
+  --color-black: var(--color-primary);
 
   /* Fuentes */
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'MonteCarlo', cursive;
+  --font-sans: 'Playfair', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Sombras */
@@ -78,6 +82,83 @@
   }
 }
 
+.hero-viewport {
+  height: 100vh;
+  height: 100svh;
+  min-height: 36rem;
+}
+
+/* Capas fotográficas del hero: fondo, intermedia y fija.
+   Los puntos de anclaje son variables para poder cambiar las imágenes
+   sin tocar el componente. */
+.hero-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-layer-back,
+.hero-layer-mid {
+  top: -6%;
+  bottom: -6%;
+  will-change: transform;
+}
+
+.hero-layer-back {
+  background-image: url('/images/hero/fondo.webp');
+  background-position: var(--hero-back-position, center center);
+}
+
+.hero-layer-mid {
+  background-image: url('/images/hero/pareja.webp');
+  background-position: var(--hero-mid-position, center 45%);
+}
+
+.hero-layer-fixed {
+  inset: 0;
+  background-image: url('/images/hero/particulas.webp');
+  background-size: var(--hero-fixed-size, 100% auto);
+  background-position: var(--hero-fixed-position, center bottom);
+}
+
+@media (min-width: 768px) and (hover: hover) {
+  .hero-layer-fixed {
+    background-attachment: fixed;
+  }
+}
+
+.hero-shade {
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 29, 59, 0.35) 0%,
+    rgba(6, 29, 59, 0.12) 40%,
+    rgba(6, 29, 59, 0.45) 100%
+  );
+}
+
+.hero-bottom-bar {
+  background: linear-gradient(
+    to top,
+    rgba(6, 29, 59, 0.94) 0%,
+    rgba(6, 29, 59, 0.82) 40%,
+    rgba(6, 29, 59, 0.45) 72%,
+    rgba(6, 29, 59, 0) 100%
+  );
+}
+
+.event-viewport {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+@media (min-width: 768px) and (hover: hover) {
+  .event-background {
+    background-attachment: fixed;
+  }
+}
+
 @layer components {
   .text-gradient-gold {
     background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 50%, var(--color-gold-dark) 100%);
@@ -89,9 +170,9 @@
   .overlay-dark {
     background: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.4) 0%,
-      rgba(0, 0, 0, 0.5) 50%,
-      rgba(0, 0, 0, 0.6) 100%
+      rgba(6, 29, 59, 0.4) 0%,
+      rgba(6, 29, 59, 0.5) 50%,
+      rgba(6, 29, 59, 0.6) 100%
     );
   }
 }

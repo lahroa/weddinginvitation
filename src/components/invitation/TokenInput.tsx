@@ -58,11 +58,11 @@ export default function TokenInput({ lang }: TokenInputProps) {
             }}
             placeholder={t('placeholder')}
             maxLength={7}
-            className="w-full px-5 py-4 rounded-xl border-2 border-gold/30 bg-white/80 backdrop-blur-sm 
+            className="w-full px-5 py-4 rounded-xl border-2 border-accent/40 bg-white/80 backdrop-blur-sm 
                        text-center font-mono text-xl tracking-[0.3em] text-dark
                        placeholder:text-gray-400 placeholder:tracking-normal placeholder:text-base
                        transition-all duration-200
-                       focus:outline-none focus:border-gold focus:ring-4 focus:ring-gold/10
+                       focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/20
                        uppercase"
           />
           {error && (

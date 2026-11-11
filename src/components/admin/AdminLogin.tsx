@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface AdminLoginProps {
-  onLogin: (password: string) => Promise<boolean>;
+  onLogin: (username: string, password: string) => Promise<boolean>;
 }
 
 export default function AdminLogin({ onLogin }: AdminLoginProps) {
   const t = useTranslations('admin');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -21,25 +23,25 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     setIsLoading(true);
 
     try {
-      const success = await onLogin(password);
+      const success = await onLogin(username, password);
       if (!success) {
-        setError('Contraseña incorrecta');
+        setError('Usuario o contraseña incorrectos');
       }
-    } catch {
-      setError('Error al conectar');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Error al conectar');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream p-4">
+    <div className="min-h-screen flex items-center justify-center bg-cream px-4 py-8">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gold/10 mb-6">
-            <span className="text-4xl">⚙️</span>
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent-2/40 mb-6">
+            <MaterialIcon name="settings" className="w-9 h-9 text-primary" />
           </div>
-          <h1 className="font-serif text-4xl text-gold mb-2">
+          <h1 className="font-serif text-4xl text-primary mb-2">
             {t('dashboard')}
           </h1>
           <p className="font-sans text-dark/50">Luis & Daniela</p>
@@ -47,13 +49,25 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
 
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-elegant p-8">
           <Input
+            label={t('username')}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="admin"
+            autoComplete="username"
+            autoCapitalize="none"
+            required
+          />
+          <Input
             label={t('password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={error}
             placeholder="••••••••"
-            autoFocus
+            autoComplete="current-password"
+            required
+            className="text-base"
           />
           <Button
             type="submit"

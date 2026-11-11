@@ -1,16 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter, Cormorant_Garamond, JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono, MonteCarlo, Playfair } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const playfair = Playfair({
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-const cormorant = Cormorant_Garamond({
+const monteCarlo = MonteCarlo({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: '400',
   variable: '--font-serif',
   display: 'swap',
 });
@@ -40,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${cormorant.variable} ${jetbrains.variable} 
+      <body className={`${playfair.variable} ${monteCarlo.variable} ${jetbrains.variable} 
                         font-sans antialiased bg-cream text-dark`}>
         {children}
       </body>

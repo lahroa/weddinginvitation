@@ -12,12 +12,10 @@ export function useAuth() {
     // Verificar sesión llamando a un endpoint protegido
     const checkAuth = async () => {
       try {
-        const res = await fetch('/api/invitaciones', {
-          credentials: 'include', // Enviar cookies
+        const res = await fetch('/api/admin/session', {
+          credentials: 'include',
         });
-        
-        // Si es 401, no está autenticado
-        // Si es 200, está autenticado
+
         setIsAuthenticated(res.ok);
       } catch {
         setIsAuthenticated(false);
@@ -29,26 +27,23 @@ export function useAuth() {
     checkAuth();
   }, []);
 
-  const login = useCallback(async (password: string): Promise<boolean> => {
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-        credentials: 'include',
-      });
-      
-      const data = await res.json();
-      
-      if (data.success) {
-        setIsAuthenticated(true);
-        return true;
-      }
-      
-      return false;
-    } catch {
-      return false;
+  const login = useCallback(async (username: string, password: string): Promise<boolean> => {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+      credentials: 'include',
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      setIsAuthenticated(true);
+      return true;
     }
+
+    if (res.status === 401) return false;
+    throw new Error(data.error || 'Error al iniciar sesión');
   }, []);
 
   const logout = useCallback(async () => {

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import GalleryImage from './GalleryImage';
 import Lightbox from './Lightbox';
 import Button from '@/components/ui/Button';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface GalleryItem {
   src: string;
@@ -41,7 +42,7 @@ export default function GalleryGrid() {
       <div className="max-w-6xl mx-auto px-4">
         {/* Título */}
         <div className="text-center mb-12">
-          <h2 className="font-serif text-4xl md:text-5xl text-gold mb-3">
+          <h2 className="font-serif text-4xl md:text-5xl text-primary mb-3">
             {t('title')}
           </h2>
           <p className="font-sans text-dark/50 text-lg">
@@ -70,7 +71,7 @@ export default function GalleryGrid() {
             size="lg"
             onClick={() => window.open('https://photos.google.com', '_blank')}
           >
-            <span className="mr-2">📷</span>
+            <MaterialIcon name="camera" className="w-5 h-5 mr-2" />
             {t('addPhotos')}
           </Button>
         </div>

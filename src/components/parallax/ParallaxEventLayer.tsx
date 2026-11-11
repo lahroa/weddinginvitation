@@ -29,7 +29,7 @@ export default function ParallaxEventLayer({
           backgroundPosition: 'center',
         }
       : {
-          background: 'linear-gradient(135deg, #FDF8F4 0%, #E8D5C8 100%)',
+          background: 'linear-gradient(135deg, var(--color-light) 0%, var(--color-accent-2) 100%)',
         };
 
   return (

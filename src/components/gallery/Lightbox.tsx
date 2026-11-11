@@ -61,7 +61,7 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose }: Ligh
           {/* Botón cerrar */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            className="absolute top-4 right-4 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-primary text-light border border-accent-2/50 hover:bg-primary/80 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -69,7 +69,7 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose }: Ligh
           </button>
 
           {/* Contador */}
-          <div className="absolute top-4 left-4 text-white/70 font-sans text-sm">
+          <div className="absolute top-4 left-4 text-light font-sans text-sm">
             {index + 1} / {images.length}
           </div>
 
@@ -94,7 +94,7 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose }: Ligh
           {/* Navegación */}
           <button
             onClick={(e) => { e.stopPropagation(); navigate(-1); }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-primary text-light border border-accent-2/50 hover:bg-primary/80 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -103,7 +103,7 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose }: Ligh
 
           <button
             onClick={(e) => { e.stopPropagation(); navigate(1); }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-primary text-light border border-accent-2/50 hover:bg-primary/80 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

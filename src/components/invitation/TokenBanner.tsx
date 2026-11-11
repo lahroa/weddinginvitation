@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import TokenInput from './TokenInput';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface TokenBannerProps {
   lang: string;
@@ -11,9 +12,9 @@ export default function TokenBanner({ lang, invitadoNombre }: TokenBannerProps) 
 
   if (invitadoNombre) {
     return (
-      <div className="py-8 px-4 bg-gold/5">
+      <div className="py-8 px-4 bg-accent-2/30">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="font-serif text-2xl text-gold">
+          <p className="font-serif text-2xl text-primary">
             {t('welcome', { name: invitadoNombre })}
           </p>
         </div>
@@ -25,10 +26,10 @@ export default function TokenBanner({ lang, invitadoNombre }: TokenBannerProps) 
     <section className="py-16 md:py-20 bg-cream">
       <div className="max-w-2xl mx-auto px-4 text-center">
         {/* Ícono */}
-        <div className="text-5xl mb-6 animate-float">💌</div>
+        <MaterialIcon name="mail" className="w-12 h-12 mx-auto mb-6 text-primary animate-float" />
 
         {/* Título */}
-        <h2 className="font-serif text-3xl md:text-4xl text-gold mb-4">
+        <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">
           {t('title')}
         </h2>
 
@@ -39,13 +40,6 @@ export default function TokenBanner({ lang, invitadoNombre }: TokenBannerProps) 
 
         {/* Input */}
         <TokenInput lang={lang} />
-
-        {/* Decoración */}
-        <div className="mt-10 flex items-center justify-center gap-4">
-          <div className="w-12 h-px bg-gold/20" />
-          <span className="text-gold/30 text-sm">❦</span>
-          <div className="w-12 h-px bg-gold/20" />
-        </div>
       </div>
     </section>
   );

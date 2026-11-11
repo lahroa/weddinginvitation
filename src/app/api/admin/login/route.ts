@@ -1,21 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createAdminSession } from '@/lib/auth';
+import { createAdminSession, isAdminAuthConfigured } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
+  if (!isAdminAuthConfigured()) {
+    return NextResponse.json(
+      { success: false, error: 'La autenticación de administración no está configurada' },
+      { status: 503 }
+    );
+  }
+
+  let credentials: unknown;
   try {
-    const { password } = await request.json();
-    
-    if (password !== process.env.ADMIN_PASSWORD) {
-      return NextResponse.json(
-        { success: false, error: 'Contraseña incorrecta' },
-        { status: 401 }
-      );
-    }
-    
+    credentials = await request.json();
+  } catch {
+    return NextResponse.json(
+      { success: false, error: 'Solicitud no válida' },
+      { status: 400 }
+    );
+  }
+
+  if (!credentials || typeof credentials !== 'object') {
+    return NextResponse.json(
+      { success: false, error: 'Solicitud no válida' },
+      { status: 400 }
+    );
+  }
+
+  const { username, password } = credentials as {
+    username?: unknown;
+    password?: unknown;
+  };
+  if (
+    username !== process.env.ADMIN_USERNAME ||
+    password !== process.env.ADMIN_PASSWORD
+  ) {
+    return NextResponse.json(
+      { success: false, error: 'Usuario o contraseña incorrectos' },
+      { status: 401 }
+    );
+  }
+
+  try {
     const token = await createAdminSession();
-    
-    const response = NextResponse.json({ success: true, data: { token } });
-    
+    const response = NextResponse.json({ success: true });
+
     response.cookies.set('admin_session', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -23,7 +51,7 @@ export async function POST(request: NextRequest) {
       maxAge: 60 * 60 * 24, // 24 horas
       path: '/',
     });
-    
+
     return response;
   } catch {
     return NextResponse.json(

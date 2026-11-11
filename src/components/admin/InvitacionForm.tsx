@@ -107,7 +107,7 @@ export default function InvitacionForm({ invitacion, onSuccess, onCancel }: Invi
             min={0}
             max={20}
             className="w-24 px-4 py-3 rounded-lg border-2 border-gray-200 text-center text-lg font-mono
-                       focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
+                       focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </div>
 
@@ -122,13 +122,13 @@ export default function InvitacionForm({ invitacion, onSuccess, onCancel }: Invi
                 <label
                   key={evento.id}
                   className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer
-                             hover:border-gold/30 transition-colors"
+                             hover:border-accent/50 transition-colors"
                 >
                   <input
                     type="checkbox"
                     checked={selectedEventos.includes(evento.id)}
                     onChange={() => toggleEvento(evento.id)}
-                    className="w-5 h-5 rounded border-gray-300 text-gold focus:ring-gold/20"
+                    className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20"
                   />
                   <div>
                     <p className="font-sans text-dark font-medium">{evento.nombre}</p>

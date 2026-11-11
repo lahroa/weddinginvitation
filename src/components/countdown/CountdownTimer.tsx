@@ -15,7 +15,7 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
   if (isComplete) {
     return (
       <div className="text-center">
-        <p className="font-serif text-3xl md:text-4xl text-gold animate-pulse-soft">
+        <p className="font-serif text-3xl md:text-4xl text-primary animate-pulse-soft">
           {t('itsToday')}
         </p>
         <Confetti />
@@ -28,8 +28,8 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
       <div className="flex gap-3 md:gap-4">
         {/* Días */}
         <div className="flex flex-col items-center gap-2">
-          <div className="w-16 h-20 md:w-20 md:h-24 bg-white rounded-lg shadow-md flex items-center justify-center border border-gold/20">
-            <span className="font-mono text-3xl md:text-4xl text-gold font-bold">
+          <div className="w-16 h-20 md:w-20 md:h-24 bg-light rounded-lg shadow-md flex items-center justify-center border border-accent-2">
+            <span className="font-mono text-3xl md:text-4xl text-primary font-bold">
               {String(days).padStart(2, '0')}
             </span>
           </div>
@@ -39,12 +39,12 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
         </div>
 
         {/* Separador */}
-        <span className="font-mono text-2xl md:text-3xl text-gold/30 mt-4">:</span>
+        <span className="font-mono text-2xl md:text-3xl text-accent/70 mt-4">:</span>
 
         {/* Horas */}
         <div className="flex flex-col items-center gap-2">
-          <div className="w-16 h-20 md:w-20 md:h-24 bg-white rounded-lg shadow-md flex items-center justify-center border border-gold/20">
-            <span className="font-mono text-3xl md:text-4xl text-gold font-bold">
+          <div className="w-16 h-20 md:w-20 md:h-24 bg-light rounded-lg shadow-md flex items-center justify-center border border-accent-2">
+            <span className="font-mono text-3xl md:text-4xl text-primary font-bold">
               {String(hours).padStart(2, '0')}
             </span>
           </div>
@@ -54,12 +54,12 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
         </div>
 
         {/* Separador */}
-        <span className="font-mono text-2xl md:text-3xl text-gold/30 mt-4">:</span>
+        <span className="font-mono text-2xl md:text-3xl text-accent/70 mt-4">:</span>
 
         {/* Minutos */}
         <div className="flex flex-col items-center gap-2">
-          <div className="w-16 h-20 md:w-20 md:h-24 bg-white rounded-lg shadow-md flex items-center justify-center border border-gold/20">
-            <span className="font-mono text-3xl md:text-4xl text-gold font-bold">
+          <div className="w-16 h-20 md:w-20 md:h-24 bg-light rounded-lg shadow-md flex items-center justify-center border border-accent-2">
+            <span className="font-mono text-3xl md:text-4xl text-primary font-bold">
               {String(minutes).padStart(2, '0')}
             </span>
           </div>
@@ -69,12 +69,12 @@ export default function CountdownTimer({ targetDate }: CountdownTimerProps) {
         </div>
 
         {/* Separador */}
-        <span className="font-mono text-2xl md:text-3xl text-gold/30 mt-4">:</span>
+        <span className="font-mono text-2xl md:text-3xl text-accent/70 mt-4">:</span>
 
         {/* Segundos */}
         <div className="flex flex-col items-center gap-2">
-          <div className="w-16 h-20 md:w-20 md:h-24 bg-white rounded-lg shadow-md flex items-center justify-center border border-gold/20">
-            <span className="font-mono text-3xl md:text-4xl text-gold font-bold">
+          <div className="w-16 h-20 md:w-20 md:h-24 bg-light rounded-lg shadow-md flex items-center justify-center border border-accent-2">
+            <span className="font-mono text-3xl md:text-4xl text-primary font-bold">
               {String(seconds).padStart(2, '0')}
             </span>
           </div>

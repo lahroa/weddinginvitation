@@ -1,7 +1,8 @@
 {
   "hero": {
     "nosCasamos": "Nos casamos",
-    "scrollDown": "Desliza para descubrir"
+    "scrollDown": "Desliza para descubrir",
+    "specialInvite": "Invitación especial para"
   },
   "events": {
     "days": "días",
@@ -39,9 +40,24 @@
     "addPhotos": "Agregar fotos al álbum"
   },
   "support": {
+    "eyebrow": "Apoyo",
     "title": "Cómo Apoyar",
     "description": "Tu presencia es el mejor regalo, pero si deseas apoyarnos...",
-    "whatsapp": "Enviar mensaje por WhatsApp"
+    "whatsapp": "Enviar mensaje por WhatsApp",
+    "whatsappLabel": "WhatsApp",
+    "email": "Enviar correo",
+    "emailLabel": "Correo",
+    "bankTitle": "Transferencia bancaria",
+    "bankName": "Banco",
+    "bankHolder": "Titular",
+    "bankAccount": "Cuenta",
+    "mobilePayment": "Pago móvil",
+    "registryTitle": "Mesa de regalos",
+    "registryValue": "Lista de regalos",
+    "registryCta": "Ver mesa de regalos",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "thanks": "Gracias por ser parte de este momento especial."
   },
   "music": {
     "on": "Música encendida",
@@ -52,6 +68,7 @@
   },
   "admin": {
     "login": "Iniciar sesión",
+    "username": "Usuario",
     "password": "Contraseña",
     "logout": "Cerrar sesión",
     "dashboard": "Panel de Administración",

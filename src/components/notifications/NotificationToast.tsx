@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface NotificationToastProps {
   id: string;
@@ -25,11 +26,11 @@ export default function NotificationToast({ id, mensaje, onDismiss }: Notificati
           animate={{ opacity: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, x: 20 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border-l-4 border-gold 
+          className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border-l-4 border-accent 
                      px-5 py-4 max-w-sm w-full"
         >
           <div className="flex items-start gap-3">
-            <span className="text-xl mt-0.5">🔔</span>
+            <MaterialIcon name="bell" className="w-5 h-5 mt-0.5 text-primary" />
             <p className="font-sans text-sm text-dark flex-1 leading-relaxed">{mensaje}</p>
             <button
               onClick={handleDismiss}

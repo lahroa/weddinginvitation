@@ -1,7 +1,8 @@
 {
   "hero": {
     "nosCasamos": "We're getting married",
-    "scrollDown": "Scroll to discover"
+    "scrollDown": "Scroll to discover",
+    "specialInvite": "A special invitation for"
   },
   "events": {
     "days": "days",
@@ -39,9 +40,24 @@
     "addPhotos": "Add photos to album"
   },
   "support": {
+    "eyebrow": "Support",
     "title": "How to Support",
     "description": "Your presence is the best gift, but if you'd like to support us...",
-    "whatsapp": "Send WhatsApp message"
+    "whatsapp": "Send a WhatsApp message",
+    "whatsappLabel": "WhatsApp",
+    "email": "Send an email",
+    "emailLabel": "Email",
+    "bankTitle": "Bank transfer",
+    "bankName": "Bank",
+    "bankHolder": "Account holder",
+    "bankAccount": "Account number",
+    "mobilePayment": "Mobile payment",
+    "registryTitle": "Gift registry",
+    "registryValue": "Gift list",
+    "registryCta": "View gift registry",
+    "copy": "Copy",
+    "copied": "Copied",
+    "thanks": "Thank you for being part of this special moment."
   },
   "music": {
     "on": "Music on",
@@ -52,6 +68,7 @@
   },
   "admin": {
     "login": "Log in",
+    "username": "Username",
     "password": "Password",
     "logout": "Log out",
     "dashboard": "Admin Panel",

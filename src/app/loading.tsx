@@ -5,7 +5,7 @@ export default function Loading() {
     <div className="min-h-screen flex items-center justify-center bg-cream">
       <div className="text-center">
         <Spinner size="lg" />
-        <p className="mt-4 font-serif text-gold/60 text-lg animate-pulse-soft">
+        <p className="mt-4 font-serif text-primary text-lg animate-pulse-soft">
           Cargando...
         </p>
       </div>

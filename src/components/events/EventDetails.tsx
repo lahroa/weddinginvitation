@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface EventDetailsProps {
   tipoEvento: 'presencial' | 'virtual';
@@ -27,18 +28,18 @@ export default function EventDetails({
     return (
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg max-w-lg mx-auto">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-2xl">📍</span>
+          <MaterialIcon name="location" className="w-6 h-6 text-primary" />
           <h3 className="font-serif text-xl text-dark">{t('location')}</h3>
         </div>
         
         {lugarPublico && (
-          <p className="font-serif text-2xl text-gold mb-2">{lugarPublico}</p>
+          <p className="font-serif text-2xl text-primary mb-2">{lugarPublico}</p>
         )}
         
         {showPrivateInfo && direccionPrivada && (
           <>
             <div className="flex items-start gap-2 mt-4 mb-4">
-              <span className="text-lg mt-0.5">📌</span>
+              <MaterialIcon name="location" className="w-5 h-5 mt-0.5 text-primary" />
               <p className="font-sans text-dark/70">{direccionPrivada}</p>
             </div>
             
@@ -47,9 +48,9 @@ export default function EventDetails({
                 href={mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold text-white rounded-lg font-sans text-sm hover:bg-gold-dark transition-colors mt-2"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-light rounded-lg font-sans text-sm hover:bg-primary/90 transition-colors mt-2"
               >
-                <span>🗺️</span>
+                <MaterialIcon name="map" className="w-4 h-4" />
                 {t('viewOnMaps')}
               </a>
             )}
@@ -69,22 +70,22 @@ export default function EventDetails({
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg max-w-lg mx-auto">
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-2xl">💻</span>
+        <MaterialIcon name="computer" className="w-6 h-6 text-primary" />
         <h3 className="font-serif text-xl text-dark">{t('connection')}</h3>
       </div>
       
       {asuntoVirtual && (
         <>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-lg">🎯</span>
-            <p className="font-serif text-2xl text-gold">{asuntoVirtual}</p>
+            <MaterialIcon name="target" className="w-5 h-5 text-primary" />
+            <p className="font-serif text-2xl text-primary">{asuntoVirtual}</p>
           </div>
         </>
       )}
       
       {showPrivateInfo && descripcionVirtual && (
         <div className="flex items-start gap-2 mt-4 mb-4">
-          <span className="text-lg mt-0.5">📝</span>
+          <MaterialIcon name="description" className="w-5 h-5 mt-0.5 text-primary" />
           <p className="font-sans text-dark/70 whitespace-pre-wrap">{descripcionVirtual}</p>
         </div>
       )}
@@ -94,9 +95,9 @@ export default function EventDetails({
           href={linkVirtual}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-sage text-white rounded-lg font-sans text-sm hover:bg-sage-light transition-colors mt-2"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-light rounded-lg font-sans text-sm hover:bg-primary/90 transition-colors mt-2"
         >
-          <span>🔗</span>
+          <MaterialIcon name="link" className="w-4 h-4" />
           {t('joinLink')}
         </a>
       )}

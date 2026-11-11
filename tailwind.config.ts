@@ -7,8 +7,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        primary: 'var(--color-primary)',
+        accent: 'var(--color-accent)',
+        'accent-2': 'var(--color-accent-2)',
+        light: 'var(--color-light)',
         cream: 'var(--color-cream)',
         dark: 'var(--color-dark)',
+        white: 'var(--color-white)',
         gold: {
           DEFAULT: 'var(--color-gold)',
           light: 'var(--color-gold-light)',

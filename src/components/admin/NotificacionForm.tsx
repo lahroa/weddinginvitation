@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Evento, InvitacionConEventos } from '@/types';
 import Button from '@/components/ui/Button';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface NotificacionFormProps {
   onSuccess: () => void;
@@ -88,24 +89,30 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
             Destinatarios
           </label>
           <div className="space-y-2">
-            <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-gold/30 transition-colors">
+            <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-accent/50 transition-colors">
               <input
                 type="radio"
                 checked={tipoDestino === 'todos'}
                 onChange={() => setTipoDestino('todos')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
-              <span className="font-sans text-dark">🌍 Todos los visitantes</span>
+              <span className="inline-flex items-center gap-2 font-sans text-dark">
+                <MaterialIcon name="public" className="w-5 h-5 text-primary" />
+                Todos los visitantes
+              </span>
             </label>
 
-            <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-gold/30 transition-colors">
+            <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-accent/50 transition-colors">
               <input
                 type="radio"
                 checked={tipoDestino === 'evento'}
                 onChange={() => setTipoDestino('evento')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
-              <span className="font-sans text-dark">📅 Invitados de un evento específico</span>
+              <span className="inline-flex items-center gap-2 font-sans text-dark">
+                <MaterialIcon name="calendar" className="w-5 h-5 text-primary" />
+                Invitados de un evento específico
+              </span>
             </label>
 
             {tipoDestino === 'evento' && (
@@ -113,7 +120,7 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
                 value={eventoId}
                 onChange={(e) => setEventoId(e.target.value)}
                 className="w-full ml-7 px-4 py-2.5 rounded-lg border-2 border-gray-200 font-sans
-                           focus:outline-none focus:border-gold"
+                           focus:outline-none focus:border-primary"
               >
                 <option value="">Seleccionar evento...</option>
                 {eventos.filter(e => !e.es_publico).map((ev) => (
@@ -122,14 +129,17 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
               </select>
             )}
 
-            <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-gold/30 transition-colors">
+            <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-accent/50 transition-colors">
               <input
                 type="radio"
                 checked={tipoDestino === 'invitacion'}
                 onChange={() => setTipoDestino('invitacion')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
-              <span className="font-sans text-dark">💌 Invitado específico</span>
+              <span className="inline-flex items-center gap-2 font-sans text-dark">
+                <MaterialIcon name="mail" className="w-5 h-5 text-primary" />
+                Invitado específico
+              </span>
             </label>
 
             {tipoDestino === 'invitacion' && (
@@ -137,7 +147,7 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
                 value={invitacionId}
                 onChange={(e) => setInvitacionId(e.target.value)}
                 className="w-full ml-7 px-4 py-2.5 rounded-lg border-2 border-gray-200 font-sans
-                           focus:outline-none focus:border-gold"
+                           focus:outline-none focus:border-primary"
               >
                 <option value="">Seleccionar invitado...</option>
                 {invitaciones.map((inv) => (
@@ -157,7 +167,7 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
             value={mensaje}
             onChange={(e) => setMensaje(e.target.value)}
             className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 text-dark font-sans
-                       focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"
+                       focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
             rows={4}
             maxLength={1000}
             placeholder="Escribe el mensaje que quieres enviar..."
@@ -172,7 +182,10 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
         )}
 
         <Button type="submit" variant="primary" className="w-full" isLoading={isLoading}>
-          🚀 Enviar notificación
+          <span className="inline-flex items-center gap-2">
+            <MaterialIcon name="rocket" className="w-5 h-5" />
+            Enviar notificación
+          </span>
         </Button>
       </div>
     </form>

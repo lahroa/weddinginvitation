@@ -43,21 +43,21 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }: Admin
     <div className="w-full md:w-64 bg-white border-r border-gray-100 flex flex-col">
       {/* Logo / Título */}
       <div className="p-6 border-b border-gray-100">
-        <h1 className="font-serif text-2xl text-gold text-center">Panel Admin</h1>
+        <h1 className="font-serif text-2xl text-primary text-center">Panel Admin</h1>
         <p className="font-sans text-xs text-dark/40 text-center mt-1">Luis & Daniela</p>
       </div>
 
       {/* Navegación */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-2">
+      <nav className="flex-1 overflow-x-auto p-3 md:p-4">
+        <ul className="flex min-w-full gap-2 md:flex-col md:space-y-2 md:gap-0">
           {menuItems.map((item) => (
-            <li key={item.id}>
+            <li key={item.id} className="min-w-max flex-1 md:flex-none">
               <button
                 onClick={() => onTabChange(item.id)}
                 className={cn(
-                  'w-full flex items-center gap-3 px-4 py-3 rounded-lg font-sans text-sm transition-all duration-200',
+                  'w-full min-h-11 flex items-center justify-center md:justify-start gap-2 md:gap-3 px-3 md:px-4 py-3 rounded-lg font-sans text-xs sm:text-sm transition-all duration-200',
                   activeTab === item.id
-                    ? 'bg-gold/10 text-gold font-medium'
+                    ? 'bg-primary text-light font-medium'
                     : 'text-dark/60 hover:bg-gray-50 hover:text-dark'
                 )}
               >

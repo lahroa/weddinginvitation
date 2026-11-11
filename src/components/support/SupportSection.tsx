@@ -1,77 +1,172 @@
+'use client';
+
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import Button from '@/components/ui/Button';
+import MaterialIcon from '@/components/ui/MaterialIcon';
+
+const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || '';
+const EMAIL = process.env.NEXT_PUBLIC_EMAIL || '';
+const BANCO = process.env.NEXT_PUBLIC_BANCO || '';
+const TITULAR = process.env.NEXT_PUBLIC_TITULAR || '';
+const CUENTA = process.env.NEXT_PUBLIC_CUENTA || '';
+const PAGO_MOVIL = process.env.NEXT_PUBLIC_PAGO_MOVIL || '';
+const MESA_REGALOS = process.env.NEXT_PUBLIC_MESA_REGALOS || '';
+
+const cardClass = 'flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-colors';
+const cardLinkClass = `${cardClass} hover:border-accent/70 hover:bg-white/[0.07]`;
 
 export default function SupportSection() {
   const t = useTranslations('support');
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP || '';
-  const email = process.env.NEXT_PUBLIC_EMAIL || '';
+  const [copiado, setCopiado] = useState<string | null>(null);
+
+  const copiar = async (valor: string) => {
+    try {
+      await navigator.clipboard.writeText(valor);
+      setCopiado(valor);
+      window.setTimeout(() => setCopiado((actual) => (actual === valor ? null : actual)), 2000);
+    } catch {
+      // Si el navegador bloquea el portapapeles, el dato queda visible para copiarlo a mano.
+    }
+  };
+
+  const whatsappUrl = `https://wa.me/${WHATSAPP.replace(/[^0-9]/g, '')}`;
+
+  const datosBancarios = [
+    { id: 'banco', label: t('bankName'), valor: BANCO },
+    { id: 'titular', label: t('bankHolder'), valor: TITULAR },
+    { id: 'cuenta', label: t('bankAccount'), valor: CUENTA },
+    { id: 'pago-movil', label: t('mobilePayment'), valor: PAGO_MOVIL },
+  ].filter((dato) => dato.valor);
 
   return (
-    <section className="py-16 md:py-24 bg-cream">
-      <div className="max-w-2xl mx-auto px-4 text-center">
-        {/* Título */}
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gold/10 mb-8">
-          <span className="text-4xl">🎁</span>
+    <section id="apoyo" className="relative overflow-hidden bg-primary">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_-10%,rgba(194,121,135,0.16),transparent_62%)]"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
+        <div className="text-center">
+          <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-accent-2">
+            {t('eyebrow')}
+          </p>
+          <h2 className="mt-3 font-serif text-4xl text-light md:text-5xl">
+            {t('title')}
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl font-sans text-base leading-relaxed text-light md:text-lg">
+            {t('description')}
+          </p>
         </div>
-        
-        <h2 className="font-serif text-4xl md:text-5xl text-gold mb-4">
-          {t('title')}
-        </h2>
 
-        <p className="font-sans text-dark/60 text-lg mb-10 leading-relaxed">
-          {t('description')}
-        </p>
-
-        {/* Tarjeta de contacto */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-10">
-          <div className="space-y-6">
-            {/* WhatsApp */}
-            {whatsapp && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-green-50/50 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">💬</span>
-                  <div className="text-left">
-                    <p className="font-sans text-sm text-dark/50">WhatsApp</p>
-                    <p className="font-sans text-dark font-medium">{whatsapp}</p>
-                  </div>
-                </div>
-                <a
-                  href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white rounded-lg 
-                             font-sans text-sm hover:bg-green-600 transition-colors whitespace-nowrap"
-                >
-                  {t('whatsapp')}
-                </a>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
+          {WHATSAPP && (
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`group ${cardLinkClass}`}
+            >
+              <div className="flex items-center gap-3">
+                <MaterialIcon name="chat" className="h-5 w-5 text-accent-2" />
+                <span className="font-sans text-[10px] uppercase tracking-[0.24em] text-light">
+                  {t('whatsappLabel')}
+                </span>
               </div>
-            )}
+              <span className="mt-5 font-serif text-xl text-light md:text-2xl">{WHATSAPP}</span>
+              <span className="mt-4 inline-flex items-center gap-2 font-sans text-xs text-light transition-colors group-hover:text-accent-2">
+                {t('whatsapp')}
+                <MaterialIcon name="link" className="h-3.5 w-3.5" />
+              </span>
+            </a>
+          )}
 
-            {/* Email */}
-            {email && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-gold/5 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">📧</span>
-                  <div className="text-left">
-                    <p className="font-sans text-sm text-dark/50">Email</p>
-                    <p className="font-sans text-dark font-medium">{email}</p>
-                  </div>
-                </div>
-                <a
-                  href={`mailto:${email}`}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold text-white rounded-lg 
-                             font-sans text-sm hover:bg-gold-dark transition-colors whitespace-nowrap"
-                >
-                  Enviar correo
-                </a>
+          {EMAIL && (
+            <a href={`mailto:${EMAIL}`} className={`group ${cardLinkClass}`}>
+              <div className="flex items-center gap-3">
+                <MaterialIcon name="mail" className="h-5 w-5 text-accent-2" />
+                <span className="font-sans text-[10px] uppercase tracking-[0.24em] text-light">
+                  {t('emailLabel')}
+                </span>
               </div>
-            )}
+              <span className="mt-5 break-all font-serif text-xl text-light md:text-2xl">{EMAIL}</span>
+              <span className="mt-4 inline-flex items-center gap-2 font-sans text-xs text-light transition-colors group-hover:text-accent-2">
+                {t('email')}
+                <MaterialIcon name="mail" className="h-3.5 w-3.5" />
+              </span>
+            </a>
+          )}
+
+          {MESA_REGALOS && (
+            <a
+              href={MESA_REGALOS}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`group ${cardLinkClass}`}
+            >
+              <div className="flex items-center gap-3">
+                <MaterialIcon name="gift" className="h-5 w-5 text-accent-2" />
+                <span className="font-sans text-[10px] uppercase tracking-[0.24em] text-light">
+                  {t('registryTitle')}
+                </span>
+              </div>
+              <span className="mt-5 font-serif text-xl text-light md:text-2xl">
+                {t('registryValue')}
+              </span>
+              <span className="mt-4 inline-flex items-center gap-2 font-sans text-xs text-light transition-colors group-hover:text-accent-2">
+                {t('registryCta')}
+                <MaterialIcon name="link" className="h-3.5 w-3.5" />
+              </span>
+            </a>
+          )}
+        </div>
+
+        {datosBancarios.length > 0 && (
+          <div className={`mt-4 ${cardClass}`}>
+            <div className="flex items-center gap-3">
+              <MaterialIcon name="description" className="h-5 w-5 text-accent-2" />
+              <h3 className="font-sans text-[10px] uppercase tracking-[0.24em] text-light">
+                {t('bankTitle')}
+              </h3>
+            </div>
+
+            <dl className="mt-4 divide-y divide-white/5">
+              {datosBancarios.map((dato) => (
+                <div
+                  key={dato.id}
+                  className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-3"
+                >
+                  <dt className="font-sans text-[10px] uppercase tracking-[0.22em] text-light">
+                    {dato.label}
+                  </dt>
+                  <dd className="flex items-center gap-2">
+                    <span className="font-sans text-sm text-light md:text-base">
+                      {dato.valor}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => copiar(dato.valor)}
+                      aria-label={`${t('copy')} ${dato.label}`}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-accent-2/50 bg-primary text-light transition-colors hover:border-accent-2"
+                    >
+                      <MaterialIcon
+                        name={copiado === dato.valor ? 'checkCircle' : 'copy'}
+                        className="h-4 w-4"
+                      />
+                    </button>
+                    {copiado === dato.valor && (
+                      <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-accent-2">
+                        {t('copied')}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        </div>
+        )}
 
-        {/* Mensaje final */}
-        <p className="font-serif text-xl text-gold/60 mt-8 italic">
-          Gracias por ser parte de este momento especial ✨
+        <p className="mt-12 text-center font-serif text-lg italic text-light md:text-xl">
+          {t('thanks')}
         </p>
       </div>
     </section>

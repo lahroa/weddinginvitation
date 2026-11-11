@@ -26,8 +26,8 @@ export default function FlipUnit({ value }: FlipUnitProps) {
   return (
     <div className="relative w-16 h-20 md:w-20 md:h-24 perspective-400">
       <div className={`relative w-full h-full ${isFlipping ? 'animate-flip' : ''}`}>
-        <div className="absolute inset-0 bg-white rounded-lg shadow-md flex items-center justify-center border border-gold/20">
-          <span className="font-mono text-3xl md:text-4xl text-gold font-bold">
+        <div className="absolute inset-0 bg-light rounded-lg shadow-md flex items-center justify-center border border-accent-2">
+          <span className="font-mono text-3xl md:text-4xl text-primary font-bold">
             {displayValue}
           </span>
         </div>

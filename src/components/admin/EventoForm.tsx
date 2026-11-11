@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Evento, TipoEvento, BackgroundType } from '@/types';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface EventoFormProps {
   evento?: Evento | null;
@@ -124,7 +125,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                 type="radio"
                 checked={esPublico}
                 onChange={() => setEsPublico(true)}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
               <span className="font-sans text-sm text-dark">Público</span>
             </label>
@@ -133,7 +134,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                 type="radio"
                 checked={!esPublico}
                 onChange={() => setEsPublico(false)}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
               <span className="font-sans text-sm text-dark">Privado</span>
             </label>
@@ -144,7 +145,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
               type="checkbox"
               checked={permiteRsvp}
               onChange={(e) => setPermiteRsvp(e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 text-gold focus:ring-gold/20"
+              className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20"
             />
             <span className="font-sans text-sm text-dark">Permitir confirmación de asistencia (RSVP)</span>
           </label>
@@ -155,18 +156,22 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                 type="radio"
                 checked={tipoEvento === 'presencial'}
                 onChange={() => setTipoEvento('presencial')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
-              <span className="font-sans text-sm text-dark">📍 Presencial</span>
+              <span className="inline-flex items-center gap-1 font-sans text-sm text-dark">
+                <MaterialIcon name="location" className="w-4 h-4 text-primary" /> Presencial
+              </span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
                 checked={tipoEvento === 'virtual'}
                 onChange={() => setTipoEvento('virtual')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
-              <span className="font-sans text-sm text-dark">💻 Virtual</span>
+              <span className="inline-flex items-center gap-1 font-sans text-sm text-dark">
+                <MaterialIcon name="computer" className="w-4 h-4 text-primary" /> Virtual
+              </span>
             </label>
           </div>
         </div>
@@ -174,7 +179,13 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
         {/* Datos según tipo */}
         <div className="bg-gray-50 rounded-xl p-4 space-y-4">
           <h4 className="font-sans text-sm font-semibold text-dark/50 uppercase tracking-wider">
-            {tipoEvento === 'presencial' ? '📍 Ubicación' : '💻 Conexión'}
+            <span className="inline-flex items-center gap-2">
+              <MaterialIcon
+                name={tipoEvento === 'presencial' ? 'location' : 'computer'}
+                className="w-4 h-4"
+              />
+              {tipoEvento === 'presencial' ? 'Ubicación' : 'Conexión'}
+            </span>
           </h4>
 
           {tipoEvento === 'presencial' ? (
@@ -215,7 +226,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                   value={descripcionVirtual}
                   onChange={(e) => setDescripcionVirtual(e.target.value)}
                   className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 text-dark font-sans
-                             focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"
+                             focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
                   rows={3}
                   placeholder="ID: 123 456 789 | Código: bodas2026"
                 />
@@ -233,8 +244,9 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
 
         {/* Visuales */}
         <div className="bg-gray-50 rounded-xl p-4 space-y-4">
-          <h4 className="font-sans text-sm font-semibold text-dark/50 uppercase tracking-wider">
-            🎨 Apariencia visual
+          <h4 className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-dark/50 uppercase tracking-wider">
+            <MaterialIcon name="palette" className="w-4 h-4" />
+            Apariencia visual
           </h4>
 
           <div className="flex gap-6">
@@ -243,7 +255,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                 type="radio"
                 checked={backgroundType === 'image'}
                 onChange={() => setBackgroundType('image')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
               <span className="font-sans text-sm text-dark">Imagen</span>
             </label>
@@ -252,7 +264,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                 type="radio"
                 checked={backgroundType === 'gradient'}
                 onChange={() => setBackgroundType('gradient')}
-                className="w-4 h-4 text-gold"
+                className="w-4 h-4 text-primary"
               />
               <span className="font-sans text-sm text-dark">Gradiente</span>
             </label>
@@ -275,7 +287,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
                 value={gradientCss}
                 onChange={(e) => setGradientCss(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 text-dark font-mono text-sm
-                           focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"
+                           focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
                 rows={2}
                 placeholder="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
               />

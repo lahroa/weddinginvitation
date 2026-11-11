@@ -1,6 +1,7 @@
 import { getEventosPublicos } from '@/lib/eventos';
 import EventCard from './EventCard';
 import { Evento } from '@/types';
+import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface EventSectionProps {
   token?: string | null;
@@ -37,8 +38,8 @@ export default async function EventSection({ token, lang }: EventSectionProps) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-cream">
         <div className="text-center px-4">
-          <div className="text-5xl mb-6">📅</div>
-          <h2 className="font-serif text-3xl text-gold mb-4">Próximamente</h2>
+          <MaterialIcon name="calendar" className="w-12 h-12 mx-auto mb-6 text-primary" />
+          <h2 className="font-serif text-3xl text-primary mb-4">Próximamente</h2>
           <p className="font-sans text-dark/50">
             Los eventos serán anunciados pronto.
           </p>
