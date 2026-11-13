@@ -25,14 +25,6 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
-  title: 'Luis & Daniela - Nos Casamos',
-  description: 'Te invitamos a celebrar nuestra boda el 27 de Julio de 2026.',
-  openGraph: {
-    title: 'Luis & Daniela - Nos Casamos',
-    description: 'Te invitamos a celebrar nuestra boda el 27 de Julio de 2026.',
-    images: [{ url: '/images/og-image.jpg', width: 1200, height: 630 }],
-    type: 'website',
-  },
 };
 
 export default function RootLayout({

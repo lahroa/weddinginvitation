@@ -16,22 +16,37 @@ interface PageProps {
 }
 
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+  const { lang } = await params;
   const { invitacion } = await searchParams;
-  const token = invitacion?.toUpperCase() || null;
+  const token = invitacion?.trim().toUpperCase() || null;
+  const imageUrl = `/api/invitacion-og?lang=${encodeURIComponent(lang)}${token ? `&invitacion=${encodeURIComponent(token)}` : ''}`;
   
   if (token) {
     try {
       const invitacionData = await getInvitacionByToken(token);
       if (invitacionData) {
+        const t = await getTranslations({ locale: lang, namespace: 'invitationImage' });
+        const title = t('shareTitle', {
+          name: invitacionData.nombre_invitado,
+          couple: NOMBRES_NOVIOS,
+        });
+        const description = t('shareDescription', { name: invitacionData.nombre_invitado });
+
         return {
-          title: `Invitación para ${invitacionData.nombre_invitado} - Luis & Daniela`,
-          description: `Hola ${invitacionData.nombre_invitado}, confirma tu asistencia a nuestra boda el 27 de Julio de 2026.`,
+          title,
+          description,
           openGraph: {
-            title: `Invitación para ${invitacionData.nombre_invitado} - Luis & Daniela`,
-            description: `Hola ${invitacionData.nombre_invitado}, confirma tu asistencia a nuestra boda.`,
-            images: [{ url: '/images/og-image.jpg', width: 1200, height: 630 }],
+            title,
+            description,
+            images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
             type: 'website',
+          },
+          twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [imageUrl],
           },
         };
       }
@@ -40,14 +55,24 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     }
   }
 
+  const t = await getTranslations({ locale: lang, namespace: 'metadata' });
+  const title = t('title');
+  const description = t('description');
+
   return {
-    title: 'Luis & Daniela - Nos Casamos',
-    description: 'Te invitamos a celebrar nuestra boda el 27 de Julio de 2026.',
+    title,
+    description,
     openGraph: {
-      title: 'Luis & Daniela - Nos Casamos',
-      description: 'Te invitamos a celebrar nuestra boda el 27 de Julio de 2026.',
-      images: [{ url: '/images/og-image.jpg', width: 1200, height: 630 }],
+      title,
+      description,
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
       type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
     },
   };
 }
@@ -123,7 +148,7 @@ export default async function HomePage({ params, searchParams }: PageProps) {
           {fechaTexto}
         </p>
         <p className="mt-4 font-sans text-[11px] text-light">
-          Hecho con cariño para celebrar el amor
+          Hecho con cariño por <a href="https://duketech.top">duketech.top</a>
         </p>
       </footer>
     </main>

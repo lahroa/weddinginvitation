@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
+import { defaultLocale, locales, type Locale } from '@/i18n/config';
 import { InvitacionConEventos } from '@/types';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
@@ -11,9 +13,14 @@ import Toast from '@/components/ui/Toast';
 import MaterialIcon from '@/components/ui/MaterialIcon';
 
 export default function InvitacionesList() {
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const shareLocale = locales.find((value) => value === locale) ?? defaultLocale;
   const [invitaciones, setInvitaciones] = useState<InvitacionConEventos[]>([]);
+  const [shareMessages, setShareMessages] = useState<Record<Locale, string> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [openLanguageMenuId, setOpenLanguageMenuId] = useState<string | null>(null);
   const [editingInvitacion, setEditingInvitacion] = useState<InvitacionConEventos | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -34,6 +41,23 @@ export default function InvitacionesList() {
   useEffect(() => {
     fetchInvitaciones();
   }, [fetchInvitaciones]);
+
+  useEffect(() => {
+    const fetchShareMessages = async () => {
+      try {
+        const response = await fetch('/api/admin/site-settings', { cache: 'no-store' });
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || t('metadataLoadError'));
+        }
+        setShareMessages(result.data.shareMessages);
+      } catch {
+        setToast({ message: t('metadataLoadError'), type: 'error' });
+      }
+    };
+
+    void fetchShareMessages();
+  }, [t]);
 
   const handleToggleStatus = async (id: string, activa: boolean) => {
     try {
@@ -68,9 +92,38 @@ export default function InvitacionesList() {
   };
 
   const copyLink = (token: string) => {
-    const url = `${window.location.origin}/?invitacion=${token}`;
-    navigator.clipboard.writeText(url);
-    setToast({ message: 'Enlace copiado al portapapeles', type: 'success' });
+    const url = `${window.location.origin}/${shareLocale}?invitacion=${encodeURIComponent(token)}`;
+    void navigator.clipboard.writeText(url).then(
+      () => setToast({ message: 'Enlace copiado al portapapeles', type: 'success' }),
+      () => setToast({ message: t('shareError'), type: 'error' }),
+    );
+  };
+
+  const shareInvitation = async (invitation: InvitacionConEventos, language: Locale) => {
+    if (!shareMessages) return;
+
+    const invitationUrl = `${window.location.origin}/${language}?invitacion=${encodeURIComponent(invitation.token)}`;
+    const text = shareMessages[language].replace(
+      /\[(nombre|enlace)\]/g,
+      (variable) => variable === '[nombre]' ? invitation.nombre_invitado : invitationUrl,
+    );
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+      } catch (shareError) {
+        if (shareError instanceof Error && shareError.name === 'AbortError') return;
+        setToast({ message: t('shareError'), type: 'error' });
+      }
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setToast({ message: t('shareMessageCopied'), type: 'success' });
+    } catch {
+      setToast({ message: t('shareError'), type: 'error' });
+    }
   };
 
   if (isLoading) {
@@ -147,7 +200,47 @@ export default function InvitacionesList() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex flex-wrap items-center justify-end gap-2 flex-shrink-0">
+                  <div className="relative flex flex-wrap items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={!shareMessages}
+                      onClick={() => void shareInvitation(inv, shareLocale)}
+                    >
+                      {t('shareInvitation')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      disabled={!shareMessages}
+                      aria-expanded={openLanguageMenuId === inv.id}
+                      onClick={() => setOpenLanguageMenuId((openId) => openId === inv.id ? null : inv.id)}
+                    >
+                      {t('shareInAnotherLanguage')}
+                    </Button>
+                    {openLanguageMenuId === inv.id && (
+                      <div className="absolute right-0 top-full z-10 mt-2 min-w-44 rounded-lg border border-gray-100 bg-white p-2 shadow-lg">
+                        {locales
+                          .filter((language) => language !== shareLocale)
+                          .map((language) => (
+                            <button
+                              key={language}
+                              type="button"
+                              className="block w-full rounded-md px-3 py-2 text-left text-sm text-dark hover:bg-gray-50"
+                              onClick={() => {
+                                setOpenLanguageMenuId(null);
+                                void shareInvitation(inv, language);
+                              }}
+                            >
+                              {t('shareLanguage', {
+                                language: t(language === 'es' ? 'languageSpanish' : 'languageEnglish'),
+                              })}
+                            </button>
+                          ))}
+                      </div>
+                    )}
+                  </div>
                   <Button
                     size="sm"
                     variant="ghost"

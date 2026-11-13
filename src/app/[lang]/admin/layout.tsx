@@ -2,6 +2,13 @@ import { setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/config';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { Quicksand } from 'next/font/google';
+
+const quicksand = Quicksand({
+  subsets: ['latin'],
+  variable: '--font-admin',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Panel de Administración - Luis & Daniela',
@@ -23,5 +30,9 @@ export default async function AdminLayout({
 
   setRequestLocale(lang);
   
-  return <>{children}</>;
+  return (
+    <div className={`${quicksand.variable} admin-root min-h-screen bg-white text-dark`}>
+      {children}
+    </div>
+  );
 }

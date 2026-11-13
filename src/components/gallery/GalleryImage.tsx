@@ -28,7 +28,7 @@ export default function GalleryImage({ src, alt, size, onClick, priority = false
       layoutId={`gallery-image-${src}`}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '0px 0px -50px 0px' }}
+      viewport={{ once: true, amount: 'some' }}
       transition={{ duration: 0.4 }}
     >
       <img

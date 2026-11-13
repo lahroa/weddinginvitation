@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Evento } from '@/types';
 import EventRSVP from './EventRSVP';
 import MaterialIcon from '@/components/ui/MaterialIcon';
+import LottieIcon from './LottieIcon';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +27,7 @@ export default function EventCard({
 }: EventCardProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [contentRevealed, setContentRevealed] = useState(false);
 
   const fecha = new Date(evento.fecha_hora);
   const dia = fecha.getDate();
@@ -41,6 +43,8 @@ export default function EventCard({
           opacity: 1,
           y: 0,
           duration: 0.6,
+          onComplete: () => setContentRevealed(true),
+          onReverseComplete: () => setContentRevealed(false),
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 85%',
@@ -76,6 +80,14 @@ export default function EventCard({
         className="event-background absolute inset-0"
         style={bgStyle}
       >
+        {evento.background_type === 'image' && evento.background_image && (
+          <img
+            src={evento.background_image}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        )}
         {/* Overlay oscuro */}
         <div className="absolute inset-0 overlay-dark" />
       </div>
@@ -86,6 +98,19 @@ export default function EventCard({
         className="relative z-10 w-full max-w-3xl mx-auto px-6 md:px-12 py-20 md:py-28 text-light"
       >
         {/* Nombre del evento */}
+        {evento.lottie_icon_url && (
+          <div className="mb-6">
+            <LottieIcon
+              src={evento.lottie_icon_url}
+              size={88}
+              color="light"
+              autoplay={false}
+              loop={false}
+              playOnHover
+              hoverEnabled={contentRevealed}
+            />
+          </div>
+        )}
         <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl text-light mb-8 md:mb-10 drop-shadow-lg">
           {evento.nombre}
         </h2>

@@ -1,17 +1,18 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 interface AdminSidebarProps {
-  activeTab: 'eventos' | 'invitaciones' | 'notificaciones';
-  onTabChange: (tab: 'eventos' | 'invitaciones' | 'notificaciones') => void;
+  activeTab: 'eventos' | 'invitaciones' | 'notificaciones' | 'metadata';
+  onTabChange: (tab: 'eventos' | 'invitaciones' | 'notificaciones' | 'metadata') => void;
   onLogout: () => void;
 }
 
 const menuItems = [
   {
     id: 'invitaciones' as const,
-    label: 'Invitaciones',
+    label: 'invitations',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -20,7 +21,7 @@ const menuItems = [
   },
   {
     id: 'eventos' as const,
-    label: 'Eventos',
+    label: 'events',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -29,21 +30,32 @@ const menuItems = [
   },
   {
     id: 'notificaciones' as const,
-    label: 'Notificaciones',
+    label: 'notifications',
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
       </svg>
     ),
   },
+  {
+    id: 'metadata' as const,
+    label: 'siteSettings',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5h16M4 12h16M4 19h16M8 5v14m8-14v14" />
+      </svg>
+    ),
+  },
 ];
 
 export default function AdminSidebar({ activeTab, onTabChange, onLogout }: AdminSidebarProps) {
+  const t = useTranslations('admin');
+
   return (
     <div className="w-full md:w-64 bg-white border-r border-gray-100 flex flex-col">
       {/* Logo / Título */}
       <div className="p-6 border-b border-gray-100">
-        <h1 className="font-serif text-2xl text-primary text-center">Panel Admin</h1>
+        <h1 className="font-serif text-2xl text-primary text-center">{t('dashboard')}</h1>
         <p className="font-sans text-xs text-dark/40 text-center mt-1">Luis & Daniela</p>
       </div>
 
@@ -62,7 +74,7 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }: Admin
                 )}
               >
                 {item.icon}
-                {item.label}
+                {t(item.label)}
               </button>
             </li>
           ))}
@@ -78,7 +90,7 @@ export default function AdminSidebar({ activeTab, onTabChange, onLogout }: Admin
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Cerrar sesión
+          {t('logout')}
         </button>
       </div>
     </div>

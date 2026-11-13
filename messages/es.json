@@ -1,4 +1,14 @@
 {
+  "metadata": {
+    "title": "Luis & Daniela - Nos Casamos",
+    "description": "Te invitamos a celebrar nuestra boda el 27 de julio de 2026."
+  },
+  "invitationImage": {
+    "forGuest": "Invitación para",
+    "forYou": "Esta invitación es para ti",
+    "shareTitle": "Invitación para {name} - {couple}",
+    "shareDescription": "Estás invitado a celebrar nuestra boda, {name}."
+  },
   "hero": {
     "nosCasamos": "Nos casamos",
     "scrollDown": "Desliza para descubrir",
@@ -75,6 +85,27 @@
     "invitations": "Invitaciones",
     "events": "Eventos",
     "notifications": "Notificaciones",
+    "siteMetadata": "Configuraciones",
+    "siteSettings": "Configuraciones",
+    "metadataLoading": "Cargando configuración...",
+    "metadataImage": "Imagen para compartir",
+    "metadataImageDescription": "Esta imagen aparece al compartir el enlace de la invitación en redes sociales y aplicaciones de mensajería.",
+    "shareMessage": "Texto predefinido para compartir la invitación",
+    "shareMessageDescription": "Personaliza el texto que acompaña el enlace. Usa [nombre] para incluir el nombre del invitado y [enlace] para insertar su enlace personal.",
+    "shareMessageLanguage": "Texto en {language}",
+    "insertVariable": "Insertar variable",
+    "languageSpanish": "Español",
+    "languageEnglish": "Inglés",
+    "saveSettings": "Guardar configuraciones",
+    "metadataSaved": "Configuraciones guardadas",
+    "metadataLoadError": "No se pudo cargar la configuración",
+    "metadataSaveError": "No se pudo guardar la configuración",
+    "metadataPreview": "Vista previa",
+    "shareInvitation": "Compartir invitación",
+    "shareInAnotherLanguage": "Compartir en otro idioma",
+    "shareLanguage": "Compartir en {language}",
+    "shareMessageCopied": "Texto de invitación copiado",
+    "shareError": "No se pudo compartir ni copiar el texto de invitación",
     "create": "Crear",
     "edit": "Editar",
     "delete": "Eliminar",

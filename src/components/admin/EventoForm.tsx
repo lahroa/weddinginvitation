@@ -5,6 +5,7 @@ import { Evento, TipoEvento, BackgroundType } from '@/types';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import MaterialIcon from '@/components/ui/MaterialIcon';
+import AssetUrlField from './AssetUrlField';
 
 interface EventoFormProps {
   evento?: Evento | null;
@@ -271,12 +272,12 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
           </div>
 
           {backgroundType === 'image' ? (
-            <Input
+            <AssetUrlField
               label="Ruta de imagen de fondo"
               value={backgroundImage}
-              onChange={(e) => setBackgroundImage(e.target.value)}
+              onChange={setBackgroundImage}
+              type="image"
               placeholder="/images/events/mi-evento.webp"
-              helperText="Sube la imagen a /public primero"
             />
           ) : (
             <div>
@@ -294,12 +295,12 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
             </div>
           )}
 
-          <Input
+          <AssetUrlField
             label="Ícono Lottie (.json)"
             value={lottieIcon}
-            onChange={(e) => setLottieIcon(e.target.value)}
+            onChange={setLottieIcon}
+            type="json"
             placeholder="/lottie/paloma.json"
-            helperText="Sube el archivo .json a /public/lottie/"
           />
         </div>
 

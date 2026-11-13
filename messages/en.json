@@ -1,4 +1,14 @@
 {
+  "metadata": {
+    "title": "Luis & Daniela - We're Getting Married",
+    "description": "Join us to celebrate our wedding on July 27, 2026."
+  },
+  "invitationImage": {
+    "forGuest": "Invitation for",
+    "forYou": "This invitation is for you",
+    "shareTitle": "Invitation for {name} - {couple}",
+    "shareDescription": "You're invited to celebrate our wedding, {name}."
+  },
   "hero": {
     "nosCasamos": "We're getting married",
     "scrollDown": "Scroll to discover",
@@ -75,6 +85,27 @@
     "invitations": "Invitations",
     "events": "Events",
     "notifications": "Notifications",
+    "siteMetadata": "Settings",
+    "siteSettings": "Settings",
+    "metadataLoading": "Loading settings...",
+    "metadataImage": "Social sharing image",
+    "metadataImageDescription": "This image appears when the invitation link is shared on social media and messaging apps.",
+    "shareMessage": "Predefined invitation sharing text",
+    "shareMessageDescription": "Customize the text sent with the link. Use [nombre] to include the guest's name and [enlace] to insert their personal link.",
+    "shareMessageLanguage": "Text in {language}",
+    "insertVariable": "Insert variable",
+    "languageSpanish": "Spanish",
+    "languageEnglish": "English",
+    "saveSettings": "Save settings",
+    "metadataSaved": "Settings saved",
+    "metadataLoadError": "Could not load settings",
+    "metadataSaveError": "Could not save the settings",
+    "metadataPreview": "Preview",
+    "shareInvitation": "Share invitation",
+    "shareInAnotherLanguage": "Share in another language",
+    "shareLanguage": "Share in {language}",
+    "shareMessageCopied": "Invitation text copied",
+    "shareError": "Could not share or copy the invitation text",
     "create": "Create",
     "edit": "Edit",
     "delete": "Delete",

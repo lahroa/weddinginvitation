@@ -44,6 +44,15 @@
   --transition-slow: 500ms ease;
 }
 
+.admin-root {
+  --font-sans: var(--font-admin);
+  --font-serif: var(--font-admin);
+  --color-white: #fff;
+  --color-light: #fff;
+  --color-cream: #fff;
+  font-family: var(--font-admin), sans-serif;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -107,7 +116,7 @@
 }
 
 .hero-layer-back {
-  background-image: url('/images/hero/fondo.webp');
+  background-image: url('/images/hero/luis-y-daniela.jpeg');
   background-position: var(--hero-back-position, center center);
 }
 
@@ -138,9 +147,9 @@
   );
 }
 
-.hero-bottom-bar {
+.hero-top-bar {
   background: linear-gradient(
-    to top,
+    to bottom,
     rgba(6, 29, 59, 0.94) 0%,
     rgba(6, 29, 59, 0.82) 40%,
     rgba(6, 29, 59, 0.45) 72%,

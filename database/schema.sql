@@ -3,6 +3,18 @@
 -- Extensiones
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
+-- Imagen usada al compartir la invitación en redes sociales
+CREATE TABLE configuracion_sitio (
+  id SMALLINT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  og_image_url TEXT NOT NULL DEFAULT '/images/og-image.jpg',
+  share_message_es TEXT NOT NULL DEFAULT E'Hola [nombre]\n\nDeseamos compartir contigo esta invitación a un día muy especial para nosotros. Deseamos que nos puedas acompañar este día. Encontraras más detalles en el sitio web que te dejo abajo.\n\n[enlace]',
+  share_message_en TEXT NOT NULL DEFAULT E'Hello [nombre]\n\nWe would love to share this invitation to a very special day with you. We hope you can join us. You will find more details on the website below.\n\n[enlace]',
+  actualizado_en TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO configuracion_sitio (id) VALUES (1)
+ON CONFLICT (id) DO NOTHING;
+
 -- Tabla de eventos
 CREATE TABLE eventos (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
