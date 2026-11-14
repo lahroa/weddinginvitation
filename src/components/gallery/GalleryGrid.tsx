@@ -6,6 +6,8 @@ import GalleryImage from './GalleryImage';
 import Lightbox from './Lightbox';
 import Button from '@/components/ui/Button';
 import MaterialIcon from '@/components/ui/MaterialIcon';
+import LottieIcon from '@/components/events/LottieIcon';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 interface GalleryItem {
   src: string;
@@ -31,6 +33,7 @@ export default function GalleryGrid() {
   const t = useTranslations('gallery');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { ref: iconRef, isVisible: iconVisible } = useScrollReveal();
 
   const handleImageClick = (index: number) => {
     setCurrentImageIndex(index);
@@ -38,10 +41,21 @@ export default function GalleryGrid() {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-cream">
+    <section className="py-16 md:py-24 bg-rose-light">
       <div className="max-w-6xl mx-auto px-4">
         {/* Título */}
         <div className="text-center mb-12">
+          <div ref={iconRef} aria-hidden="true" className="mb-4">
+            <LottieIcon
+              src="/lottie/276-avatars-woman-man.json"
+              size={80}
+              autoplay={false}
+              loop={false}
+              playOnReveal
+              revealEnabled={iconVisible}
+              repeatHoverAfterReveal
+            />
+          </div>
           <h2 className="font-serif text-4xl md:text-5xl text-primary mb-3">
             {t('title')}
           </h2>

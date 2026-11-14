@@ -7,6 +7,7 @@ import {
   createNotificacion,
   getAllNotificaciones 
 } from '@/lib/notificaciones';
+import { sendPushNotification } from '@/lib/push';
 import { notificacionInputSchema } from '@/lib/validators';
 
 export async function GET(request: NextRequest) {
@@ -69,7 +70,8 @@ export async function POST(request: NextRequest) {
     }
     
     const notificacion = await createNotificacion(validation.data);
-    return NextResponse.json({ success: true, data: notificacion }, { status: 201 });
+    const push = await sendPushNotification(notificacion);
+    return NextResponse.json({ success: true, data: notificacion, push }, { status: 201 });
   } catch {
     return NextResponse.json(
       { success: false, error: 'Error al crear notificación' },

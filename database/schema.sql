@@ -82,9 +82,21 @@ CREATE TABLE notificaciones (
   creado_en TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Suscripciones de navegador para notificaciones push
+CREATE TABLE suscripciones_push (
+  endpoint TEXT PRIMARY KEY,
+  p256dh TEXT NOT NULL,
+  auth TEXT NOT NULL,
+  invitacion_id UUID REFERENCES invitaciones(id) ON DELETE CASCADE,
+  idioma VARCHAR(5) NOT NULL DEFAULT 'es' CHECK (idioma IN ('es', 'en')),
+  creado_en TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  actualizado_en TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Índices
 CREATE INDEX idx_invitaciones_token ON invitaciones(token);
 CREATE INDEX idx_invitaciones_activa ON invitaciones(activa);
 CREATE INDEX idx_eventos_publico ON eventos(es_publico);
 CREATE INDEX idx_asistencias_invitacion ON asistencias(invitacion_id);
 CREATE INDEX idx_notificaciones_destino ON notificaciones(tipo_destino);
+CREATE INDEX idx_suscripciones_push_invitacion ON suscripciones_push(invitacion_id);

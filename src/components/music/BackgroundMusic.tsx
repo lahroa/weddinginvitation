@@ -16,7 +16,7 @@ export default function BackgroundMusic() {
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'hover-pinch' }}
+      transition={{ type: 'spring' }}
       className="fixed bottom-6 right-6 z-40"
     >
       <button

@@ -34,7 +34,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${playfair.variable} ${monteCarlo.variable} ${jetbrains.variable} 
+      <head>
+        <link
+          rel="preload"
+          href="/lottie/639-people-queue.json"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className={`${playfair.variable} ${monteCarlo.variable} ${jetbrains.variable}
                         font-sans antialiased bg-cream text-dark`}>
         {children}
       </body>

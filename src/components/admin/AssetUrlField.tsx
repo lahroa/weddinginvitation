@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Input from '@/components/ui/Input';
 
 interface AssetUrlFieldProps {
@@ -20,6 +20,11 @@ interface Asset {
   lastModified: string | null;
 }
 
+interface LocalAnimation {
+  name: string;
+  url: string;
+}
+
 export default function AssetUrlField({
   label,
   value,
@@ -35,7 +40,41 @@ export default function AssetUrlField({
   const [assets, setAssets] = useState<Asset[]>([]);
   const [libraryError, setLibraryError] = useState('');
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [localAnimations, setLocalAnimations] = useState<LocalAnimation[]>([]);
+  const [isLoadingLocalAnimations, setIsLoadingLocalAnimations] = useState(false);
+  const [localAnimationsError, setLocalAnimationsError] = useState('');
   const accept = type === 'image' ? 'image/jpeg,image/png,image/webp,image/avif,image/gif' : '.json,application/json';
+
+  useEffect(() => {
+    if (type !== 'json') return;
+
+    const controller = new AbortController();
+    const loadLocalAnimations = async () => {
+      setIsLoadingLocalAnimations(true);
+      setLocalAnimationsError('');
+      try {
+        const response = await fetch('/api/lotties', {
+          cache: 'no-store',
+          signal: controller.signal,
+        });
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          throw new Error(result.error || 'No se pudo cargar la lista de animaciones');
+        }
+        setLocalAnimations(result.data.animations);
+      } catch (loadError) {
+        if (controller.signal.aborted) return;
+        setLocalAnimationsError(
+          loadError instanceof Error ? loadError.message : 'No se pudo cargar la lista de animaciones',
+        );
+      } finally {
+        if (!controller.signal.aborted) setIsLoadingLocalAnimations(false);
+      }
+    };
+
+    void loadLocalAnimations();
+    return () => controller.abort();
+  }, [type]);
 
   const loadLibrary = async () => {
     setIsLibraryOpen(true);
@@ -113,6 +152,34 @@ export default function AssetUrlField({
         placeholder={placeholder}
         helperText="También puedes pegar una URL existente."
       />
+      {type === 'json' && (
+        <label className="mt-3 block font-sans text-sm text-dark">
+          Animaciones disponibles
+          <select
+            value={localAnimations.some((animation) => animation.url === value) ? value : ''}
+            onChange={(event) => {
+              const animation = localAnimations.find((item) => item.url === event.target.value);
+              if (animation) onChange(animation.url);
+            }}
+            disabled={isLoadingLocalAnimations || localAnimations.length === 0}
+            className="mt-1 block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark focus:border-primary focus:outline-none disabled:cursor-wait disabled:opacity-60"
+          >
+            <option value="">
+              {isLoadingLocalAnimations ? 'Cargando animaciones...' : 'Selecciona una animación local'}
+            </option>
+            {localAnimations.map((animation) => (
+              <option value={animation.url} key={animation.url}>{animation.name}</option>
+            ))}
+          </select>
+          {localAnimationsError ? (
+            <span className="mt-1 block text-xs text-red-600" role="alert">{localAnimationsError}</span>
+          ) : (
+            <span className="mt-1 block text-xs text-gray-500">
+              Estas animaciones se cargan desde la carpeta pública /lottie.
+            </span>
+          )}
+        </label>
+      )}
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <input
           ref={fileInput}

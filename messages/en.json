@@ -34,7 +34,13 @@
     "notes": "Notes",
     "confirm": "Confirm attendance",
     "thankYou": "Thank you for confirming!",
-    "attendanceRegistered": "Your attendance has been registered"
+    "attendanceRegistered": "Your attendance has been registered",
+    "remindMe": "You can remind me",
+    "remindMeEnabled": "Reminders enabled",
+    "pushUnsupported": "This browser does not support push notifications",
+    "pushUnavailable": "Push notifications are not configured",
+    "pushError": "Could not enable reminders",
+    "pushLoading": "Enabling reminders..."
   },
   "invitation": {
     "title": "Do you have an invitation code?",
@@ -72,6 +78,11 @@
   "music": {
     "on": "Music on",
     "off": "Music off"
+  },
+  "loading": {
+    "preparing": "Preparing your invitation",
+    "greeting": "Hello, {name}",
+    "open": "Tap to open"
   },
   "notifications": {
     "noNew": "No new notifications"

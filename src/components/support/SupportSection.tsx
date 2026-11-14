@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import LottieIcon from '@/components/events/LottieIcon';
 import MaterialIcon from '@/components/ui/MaterialIcon';
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || '';
@@ -18,6 +20,7 @@ const cardLinkClass = `${cardClass} hover:border-accent/70 hover:bg-white/[0.07]
 export default function SupportSection() {
   const t = useTranslations('support');
   const [copiado, setCopiado] = useState<string | null>(null);
+  const { ref: iconRef, isVisible: iconVisible } = useScrollReveal();
 
   const copiar = async (valor: string) => {
     try {
@@ -40,13 +43,29 @@ export default function SupportSection() {
 
   return (
     <section id="apoyo" className="relative overflow-hidden bg-primary">
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_-10%,rgba(194,121,135,0.16),transparent_62%)]"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0" aria-hidden="true">
+        <img
+          src="/images/hero/luis-daniela-1.jpeg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 overlay-dark" />
+      </div>
 
-      <div className="relative mx-auto max-w-4xl px-6 py-20 md:py-28">
+      <div className="relative z-10 mx-auto max-w-4xl px-6 py-20 md:py-28">
         <div className="text-center">
+          <div ref={iconRef} aria-hidden="true" className="mb-4">
+            <LottieIcon
+              src="/lottie/20-heart.li.json"
+              size={80}
+              autoplay={false}
+              loop={false}
+              playOnReveal
+              revealEnabled={iconVisible}
+              repeatHoverAfterReveal
+              color="light"
+            />
+          </div>
           <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-accent-2">
             {t('eyebrow')}
           </p>

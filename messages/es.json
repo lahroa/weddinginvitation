@@ -34,7 +34,13 @@
     "notes": "Notas",
     "confirm": "Confirmar asistencia",
     "thankYou": "¡Gracias por confirmar!",
-    "attendanceRegistered": "Tu asistencia ha sido registrada"
+    "attendanceRegistered": "Tu asistencia ha sido registrada",
+    "remindMe": "Puedes recordarme",
+    "remindMeEnabled": "Recordatorios activados",
+    "pushUnsupported": "Este navegador no admite notificaciones push",
+    "pushUnavailable": "Notificaciones push no configuradas",
+    "pushError": "No se pudo activar el recordatorio",
+    "pushLoading": "Activando recordatorios..."
   },
   "invitation": {
     "title": "¿Tienes un código de invitación?",
@@ -72,6 +78,11 @@
   "music": {
     "on": "Música encendida",
     "off": "Música apagada"
+  },
+  "loading": {
+    "preparing": "Preparando tu invitación",
+    "greeting": "Hola, {name}",
+    "open": "Toca para abrir"
   },
   "notifications": {
     "noNew": "No hay notificaciones nuevas"

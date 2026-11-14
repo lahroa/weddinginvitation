@@ -50,12 +50,14 @@ export default async function EventSection({ token, lang }: EventSectionProps) {
 
   return (
     <>
-      {allEventos.map((evento) => (
+      {allEventos.map((evento, index) => (
         <EventCard
           key={evento.id}
           evento={evento}
           showPrivateInfo={evento.es_publico || !!token}
           token={token}
+          lang={lang}
+          showNotificationPrompt={index === 0}
         />
       ))}
     </>

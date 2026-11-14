@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button';
 import MaterialIcon from '@/components/ui/MaterialIcon';
 
 interface NotificacionFormProps {
-  onSuccess: () => void;
+  onSuccess: (push: { configured: boolean; sent: number; failed: number }) => void;
 }
 
 export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
@@ -67,7 +67,7 @@ export default function NotificacionForm({ onSuccess }: NotificacionFormProps) {
       if (data.success) {
         setMensaje('');
         setTipoDestino('todos');
-        onSuccess();
+        onSuccess(data.push);
       } else {
         setError(data.error || 'Error al enviar');
       }

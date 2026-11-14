@@ -7,6 +7,7 @@ import TokenBanner from '@/components/invitation/TokenBanner';
 import SupportSection from '@/components/support/SupportSection';
 import BackgroundMusic from '@/components/music/BackgroundMusic';
 import NotificationBanner from '@/components/notifications/NotificationBanner';
+import PageLoadingGate from '@/components/ui/PageLoadingGate';
 import { getInvitacionByToken } from '@/lib/invitaciones';
 import type { Metadata } from 'next';
 
@@ -122,35 +123,37 @@ export default async function HomePage({ params, searchParams }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen m-0 p-0">
-      <NotificationBanner token={token} />
-      <BackgroundMusic />
+    <PageLoadingGate guestName={invitadoNombre}>
+      <main className="min-h-screen m-0 p-0">
+        <NotificationBanner token={token} />
+        <BackgroundMusic />
 
-      <ParallaxHero
-        nombresNovios={nombresNovios}
-        fechaTexto={fechaTexto}
-        invitadoNombre={invitadoNombre}
-      />
+        <ParallaxHero
+          nombresNovios={nombresNovios}
+          fechaTexto={fechaTexto}
+          invitadoNombre={invitadoNombre}
+        />
 
-      <EventSection token={token} lang={lang} />
+        <EventSection token={token} lang={lang} />
 
-      {!token && <TokenBanner lang={lang} />}
+        {!token && <TokenBanner lang={lang} />}
 
-      <GalleryGrid />
+        <GalleryGrid />
 
-      <SupportSection />
+        <SupportSection />
 
-      <footer className="bg-primary px-6 pb-10 pt-12 text-center">
-        <p className="font-serif text-base tracking-[0.3em] text-light">
-          {nombresNovios}
-        </p>
-        <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.28em] text-light">
-          {fechaTexto}
-        </p>
-        <p className="mt-4 font-sans text-[11px] text-light">
-          Hecho con cariño por <a href="https://duketech.top">duketech.top</a>
-        </p>
-      </footer>
-    </main>
+        <footer className="bg-primary px-6 pb-10 pt-12 text-center">
+          <p className="font-serif text-base tracking-[0.3em] text-light">
+            {nombresNovios}
+          </p>
+          <p className="mt-2 font-sans text-[11px] uppercase tracking-[0.28em] text-light">
+            {fechaTexto}
+          </p>
+          <p className="mt-4 font-sans text-[11px] text-light">
+            Hecho con cariño por <a href="https://duketech.top">duketech.top</a>
+          </p>
+        </footer>
+      </main>
+    </PageLoadingGate>
   );
 }

@@ -7,6 +7,7 @@ import { Evento } from '@/types';
 import EventRSVP from './EventRSVP';
 import MaterialIcon from '@/components/ui/MaterialIcon';
 import LottieIcon from './LottieIcon';
+import PushNotificationPrompt from '@/components/notifications/PushNotificationPrompt';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,8 @@ interface EventCardProps {
   evento: Evento;
   showPrivateInfo: boolean;
   token?: string | null;
+  lang: string;
+  showNotificationPrompt?: boolean;
   maxAcompanantes?: number;
   acompanantesYaUsados?: number;
 }
@@ -22,6 +25,8 @@ export default function EventCard({
   evento,
   showPrivateInfo,
   token,
+  lang,
+  showNotificationPrompt = false,
   maxAcompanantes = 0,
   acompanantesYaUsados = 0,
 }: EventCardProps) {
@@ -106,6 +111,8 @@ export default function EventCard({
               color="light"
               autoplay={false}
               loop={false}
+              playOnReveal
+              revealEnabled={contentRevealed}
               playOnHover
               hoverEnabled={contentRevealed}
             />
@@ -193,6 +200,8 @@ export default function EventCard({
             </a>
           )}
         </div>
+
+        {showNotificationPrompt && <PushNotificationPrompt token={token} lang={lang} />}
 
         {/* RSVP */}
         {token && showPrivateInfo && evento.permite_rsvp && (

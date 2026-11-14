@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import MaterialIcon from '@/components/ui/MaterialIcon';
 import AssetUrlField from './AssetUrlField';
+import LottiePreview from './LottiePreview';
 
 interface EventoFormProps {
   evento?: Evento | null;
@@ -302,6 +303,7 @@ export default function EventoForm({ evento, onSuccess, onCancel }: EventoFormPr
             type="json"
             placeholder="/lottie/paloma.json"
           />
+          {lottieIcon.trim() && <LottiePreview src={lottieIcon.trim()} />}
         </div>
 
         {error && (

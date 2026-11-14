@@ -1,6 +1,9 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import TokenInput from './TokenInput';
-import MaterialIcon from '@/components/ui/MaterialIcon';
+import LottieIcon from '@/components/events/LottieIcon';
 
 interface TokenBannerProps {
   lang: string;
@@ -9,6 +12,7 @@ interface TokenBannerProps {
 
 export default function TokenBanner({ lang, invitadoNombre }: TokenBannerProps) {
   const t = useTranslations('invitation');
+  const { ref: iconRef, isVisible: iconVisible } = useScrollReveal();
 
   if (invitadoNombre) {
     return (
@@ -26,7 +30,17 @@ export default function TokenBanner({ lang, invitadoNombre }: TokenBannerProps) 
     <section className="py-16 md:py-20 bg-cream">
       <div className="max-w-2xl mx-auto px-4 text-center">
         {/* Ícono */}
-        <MaterialIcon name="mail" className="w-12 h-12 mx-auto mb-6 text-primary animate-float" />
+        <div ref={iconRef} aria-hidden="true" className="mb-6">
+          <LottieIcon
+            src="/lottie/3090-mail-open-document.json"
+            size={64}
+            autoplay={false}
+            loop={false}
+            playOnReveal
+            revealEnabled={iconVisible}
+            repeatHoverAfterReveal
+          />
+        </div>
 
         {/* Título */}
         <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">

@@ -3,56 +3,79 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 export function useMusic(audioSrc: string) {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const hasInteracted = useRef(false);
 
   useEffect(() => {
-    const audio = new Audio(audioSrc);
+    setIsPlaying(false);
+    setIsLoaded(false);
+
+    const audio = new Audio();
     audio.loop = true;
     audio.volume = 0.2;
+    audio.preload = 'auto';
     audioRef.current = audio;
 
-    audio.addEventListener('canplaythrough', () => setIsLoaded(true));
+    let disposed = false;
+    let playbackStarted = false;
 
+    const markLoaded = () => setIsLoaded(true);
+    const markPlaying = () => setIsPlaying(true);
+    const markPaused = () => setIsPlaying(false);
+    const reportAudioError = () => {
+      console.error(`No se pudo cargar la música de fondo: ${audioSrc}`, audio.error);
+    };
+    const handlePlaybackError = (error: unknown) => {
+      if (error instanceof DOMException && error.name === 'NotAllowedError') return;
+      console.error('No se pudo reproducir la música de fondo.', error);
+    };
     const enableAudio = () => {
-      if (!hasInteracted.current && audioRef.current) {
-        hasInteracted.current = true;
-        audioRef.current.play().catch(() => {
-          // Autoplay bloqueado, esperar interacción
-        });
-        setIsPlaying(true);
-      }
-      document.removeEventListener('click', enableAudio);
-      document.removeEventListener('scroll', enableAudio);
-      document.removeEventListener('touchstart', enableAudio);
+      if (disposed || playbackStarted || !audio.paused) return;
+
+      void audio.play().then(() => {
+        if (disposed) return;
+        playbackStarted = true;
+      }).catch(handlePlaybackError);
     };
 
-    document.addEventListener('click', enableAudio);
-    document.addEventListener('scroll', enableAudio);
-    document.addEventListener('touchstart', enableAudio);
+    audio.addEventListener('loadeddata', markLoaded);
+    audio.addEventListener('canplay', markLoaded);
+    audio.addEventListener('playing', markPlaying);
+    audio.addEventListener('pause', markPaused);
+    audio.addEventListener('error', reportAudioError);
+    window.addEventListener('invitation:open', enableAudio);
+
+    audio.src = audioSrc;
+    audio.load();
+    if (audio.readyState >= 2) markLoaded();
 
     return () => {
+      disposed = true;
       audio.pause();
-      audio.removeEventListener('canplaythrough', () => setIsLoaded(true));
-      document.removeEventListener('click', enableAudio);
-      document.removeEventListener('scroll', enableAudio);
-      document.removeEventListener('touchstart', enableAudio);
+      audio.removeEventListener('loadeddata', markLoaded);
+      audio.removeEventListener('canplay', markLoaded);
+      audio.removeEventListener('playing', markPlaying);
+      audio.removeEventListener('pause', markPaused);
+      audio.removeEventListener('error', reportAudioError);
+      window.removeEventListener('invitation:open', enableAudio);
+      if (audioRef.current === audio) audioRef.current = null;
     };
   }, [audioSrc]);
 
   const toggleMusic = useCallback(() => {
-    if (!audioRef.current) return;
-    
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      void audio.play().catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'NotAllowedError') return;
+        console.error('No se pudo reproducir la música de fondo.', error);
+      });
     } else {
-      audioRef.current.play().catch(() => {});
-      setIsPlaying(true);
+      audio.pause();
     }
-  }, [isPlaying]);
+  }, []);
 
   return { isPlaying, isLoaded, toggleMusic };
 }

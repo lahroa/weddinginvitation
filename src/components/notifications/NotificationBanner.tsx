@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNotifications } from '@/hooks/useNotifications';
 import NotificationToast from './NotificationToast';
 
@@ -11,40 +11,70 @@ interface NotificationBannerProps {
 export default function NotificationBanner({ token }: NotificationBannerProps) {
   const { notifications } = useNotifications(token);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
-  const [visibleNotifications, setVisibleNotifications] = useState<typeof notifications>([]);
+  const [loadedStorageKey, setLoadedStorageKey] = useState<string | null>(null);
+  const storageKey = `dismissed-notifications:${token || 'public'}`;
 
-  // Filtrar no descartadas y limitar a 2 visibles
   useEffect(() => {
-    const active = notifications.filter((n) => !dismissedIds.includes(n.id));
-    setVisibleNotifications(active.slice(0, 2));
-  }, [notifications, dismissedIds]);
+    try {
+      const saved = window.localStorage.getItem(storageKey);
+      const parsed: unknown = saved ? JSON.parse(saved) : [];
+      setDismissedIds(
+        Array.isArray(parsed) && parsed.every((id): id is string => typeof id === 'string')
+          ? parsed
+          : []
+      );
+    } catch {
+      setDismissedIds([]);
+    }
+    setLoadedStorageKey(storageKey);
+  }, [storageKey]);
 
-  // Auto-descartar después de 8 segundos
+  const dismissNotification = useCallback((id: string) => {
+    setDismissedIds((previous) => {
+      if (previous.includes(id)) return previous;
+      const updated = [...previous, id];
+      try {
+        window.localStorage.setItem(storageKey, JSON.stringify(updated));
+      } catch {
+        // Keep the notification dismissed for the current page if storage is unavailable.
+      }
+      return updated;
+    });
+  }, [storageKey]);
+
+  const visibleNotifications = useMemo(
+    () => loadedStorageKey === storageKey
+      ? notifications.filter((notification) => !dismissedIds.includes(notification.id)).slice(0, 2)
+      : [],
+    [dismissedIds, loadedStorageKey, notifications, storageKey]
+  );
+
   useEffect(() => {
     if (visibleNotifications.length === 0) return;
     
     const timers = visibleNotifications.map((n) => {
       return setTimeout(() => {
-        setDismissedIds((prev) => [...prev, n.id]);
+        dismissNotification(n.id);
       }, 8000);
     });
 
     return () => timers.forEach(clearTimeout);
-  }, [visibleNotifications]);
+  }, [dismissNotification, visibleNotifications]);
 
   if (visibleNotifications.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+    <div className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2
+                    pointer-events-none sm:bottom-6"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+    >
       <div className="flex flex-col gap-3 pointer-events-auto">
         {visibleNotifications.map((notification) => (
           <NotificationToast
             key={notification.id}
             id={notification.id}
             mensaje={notification.mensaje}
-            onDismiss={(id) => {
-              setDismissedIds((prev) => [...prev, id]);
-            }}
+            onDismiss={dismissNotification}
           />
         ))}
       </div>

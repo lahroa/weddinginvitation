@@ -71,3 +71,17 @@ export const notificacionInputSchema = z.object({
 }, {
   message: 'Debe especificar el destino según el tipo seleccionado',
 });
+
+export const pushSubscriptionInputSchema = z.object({
+  subscription: z.object({
+    endpoint: z.string().url().max(2048).refine((value) => value.startsWith('https://'), {
+      message: 'El endpoint de notificaciones no es válido',
+    }),
+    keys: z.object({
+      p256dh: z.string().min(1).max(256),
+      auth: z.string().min(1).max(256),
+    }),
+  }),
+  token: z.string().length(7).nullable().optional(),
+  lang: z.string().min(2).max(5),
+});

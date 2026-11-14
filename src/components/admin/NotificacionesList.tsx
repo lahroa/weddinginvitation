@@ -7,8 +7,19 @@ import Toast from '@/components/ui/Toast';
 export default function NotificacionesList() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  const handleSuccess = useCallback(() => {
-    setToast({ message: 'Notificación enviada correctamente', type: 'success' });
+  const handleSuccess = useCallback((push: { configured: boolean; sent: number; failed: number }) => {
+    if (!push?.configured) {
+      setToast({ message: 'Notificación guardada; configura VAPID para enviar push.', type: 'error' });
+    } else if (push.failed > 0) {
+      setToast({
+        message: `Notificación guardada; push enviado a ${push.sent} dispositivo(s), ${push.failed} fallido(s).`,
+        type: 'error',
+      });
+    } else if (push.sent === 0) {
+      setToast({ message: 'Notificación guardada; no hay suscriptores para este destino.', type: 'success' });
+    } else {
+      setToast({ message: `Notificación enviada a ${push.sent} dispositivo(s).`, type: 'success' });
+    }
   }, []);
 
   return (
