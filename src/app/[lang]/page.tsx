@@ -23,7 +23,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const { invitacion } = await searchParams;
   const token = invitacion?.trim().toUpperCase() || null;
   const fechaTexto = formatFechaBoda(lang);
-  const imageUrl = `/api/invitacion-og?lang=${encodeURIComponent(lang)}${token ? `&invitacion=${encodeURIComponent(token)}` : ''}`;
+  const imageUrl = `/api/invitacion-og/${encodeURIComponent(lang)}${token ? `/${encodeURIComponent(token)}` : ''}`;
   
   if (token) {
     try {

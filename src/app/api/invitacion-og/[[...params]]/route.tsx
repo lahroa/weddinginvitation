@@ -107,9 +107,17 @@ function drawLines(
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const locale = locales.find((value) => value === url.searchParams.get('lang')) ?? defaultLocale;
+    const pathParams = url.pathname
+      .slice('/api/invitacion-og'.length)
+      .split('/')
+      .filter(Boolean)
+      .map(decodeURIComponent);
+    const pathLocale = pathParams[0];
+    const locale = locales.find(
+      (value) => value === (pathLocale ?? url.searchParams.get('lang')),
+    ) ?? defaultLocale;
     const t = await getTranslations({ locale, namespace: 'invitationImage' });
-    const token = url.searchParams.get('invitacion')?.trim().toUpperCase();
+    const token = (pathParams[1] ?? url.searchParams.get('invitacion'))?.trim().toUpperCase();
     const invitation = token ? await getInvitacionByToken(token) : null;
     let backgroundImage = DEFAULT_BACKGROUND_IMAGE;
 
