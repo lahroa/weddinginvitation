@@ -1,13 +1,13 @@
 {
   "metadata": {
     "title": "Luis & Daniela - Nos Casamos",
-    "description": "Te invitamos a celebrar nuestra boda el 27 de julio de 2026."
+    "description": "Te invitamos a celebrar nuestra boda el {date}."
   },
   "invitationImage": {
     "forGuest": "Invitación para",
     "forYou": "Esta invitación es para ti",
     "shareTitle": "Invitación para {name} - {couple}",
-    "shareDescription": "Estás invitado a celebrar nuestra boda, {name}."
+    "shareDescription": "Estás invitado a celebrar nuestra boda, {name}, el {date}."
   },
   "hero": {
     "nosCasamos": "Nos casamos",

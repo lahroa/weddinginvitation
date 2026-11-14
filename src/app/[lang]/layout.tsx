@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/config';
+import { formatFechaBoda } from '@/lib/fecha';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -20,7 +21,7 @@ export async function generateMetadata({
 
   const t = await getTranslations({ locale: lang, namespace: 'metadata' });
   const title = t('title');
-  const description = t('description');
+  const description = t('description', { date: formatFechaBoda(lang) });
 
   return {
     title,

@@ -9,6 +9,7 @@ import BackgroundMusic from '@/components/music/BackgroundMusic';
 import NotificationBanner from '@/components/notifications/NotificationBanner';
 import PageLoadingGate from '@/components/ui/PageLoadingGate';
 import { getInvitacionByToken } from '@/lib/invitaciones';
+import { formatFechaBoda } from '@/lib/fecha';
 import type { Metadata } from 'next';
 
 interface PageProps {
@@ -21,6 +22,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const { lang } = await params;
   const { invitacion } = await searchParams;
   const token = invitacion?.trim().toUpperCase() || null;
+  const fechaTexto = formatFechaBoda(lang);
   const imageUrl = `/api/invitacion-og?lang=${encodeURIComponent(lang)}${token ? `&invitacion=${encodeURIComponent(token)}` : ''}`;
   
   if (token) {
@@ -32,7 +34,10 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
           name: invitacionData.nombre_invitado,
           couple: NOMBRES_NOVIOS,
         });
-        const description = t('shareDescription', { name: invitacionData.nombre_invitado });
+        const description = t('shareDescription', {
+          name: invitacionData.nombre_invitado,
+          date: fechaTexto,
+        });
 
         return {
           title,
@@ -40,7 +45,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
           openGraph: {
             title,
             description,
-            images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
+            images: [{ url: imageUrl, width: 1200, height: 630, alt: title, type: 'image/webp' }],
             type: 'website',
           },
           twitter: {
@@ -58,7 +63,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   const t = await getTranslations({ locale: lang, namespace: 'metadata' });
   const title = t('title');
-  const description = t('description');
+  const description = t('description', { date: fechaTexto });
 
   return {
     title,
@@ -66,7 +71,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     openGraph: {
       title,
       description,
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: title, type: 'image/webp' }],
       type: 'website',
     },
     twitter: {
@@ -79,29 +84,13 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 }
 
 const NOMBRES_NOVIOS = process.env.NEXT_PUBLIC_NOMBRES_NOVIOS || 'Luis & Daniela';
-const FECHA_BODA = process.env.NEXT_PUBLIC_FECHA_BODA || '2026-07-27T16:00:00-04:00';
-
-function formatFechaBoda(iso: string): string {
-  const fecha = new Date(iso);
-  if (Number.isNaN(fecha.getTime())) return iso;
-
-  return new Intl.DateTimeFormat('es-VE', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    timeZone: 'America/Caracas',
-  })
-    .format(fecha)
-    .replace(/[/.]/g, ' · ')
-    .trim();
-}
 
 export default async function HomePage({ params, searchParams }: PageProps) {
   const { lang } = await params;
   const { invitacion } = await searchParams;
 
   const nombresNovios = NOMBRES_NOVIOS;
-  const fechaTexto = formatFechaBoda(FECHA_BODA);
+  const fechaTexto = formatFechaBoda(lang);
 
   
   // Habilitar renderizado estático para next-intl

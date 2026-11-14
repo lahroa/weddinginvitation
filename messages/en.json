@@ -1,13 +1,13 @@
 {
   "metadata": {
     "title": "Luis & Daniela - We're Getting Married",
-    "description": "Join us to celebrate our wedding on July 27, 2026."
+    "description": "Join us to celebrate our wedding on {date}."
   },
   "invitationImage": {
     "forGuest": "Invitation for",
     "forYou": "This invitation is for you",
     "shareTitle": "Invitation for {name} - {couple}",
-    "shareDescription": "You're invited to celebrate our wedding, {name}."
+    "shareDescription": "You're invited to celebrate our wedding, {name}, on {date}."
   },
   "hero": {
     "nosCasamos": "We're getting married",
