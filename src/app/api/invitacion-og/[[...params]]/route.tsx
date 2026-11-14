@@ -32,14 +32,10 @@ if (!GlobalFonts.registerFromPath(resolve(FONT_DIRECTORY, 'montecarlo-latin.ttf'
   throw new Error('No se pudo registrar la fuente MonteCarlo');
 }
 
-async function loadBackgroundImage(source: string, requestUrl: URL): Promise<Buffer> {
-  const imageUrl = new URL(source, requestUrl);
-  const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL
-    ? new URL(process.env.NEXT_PUBLIC_SITE_URL).origin
-    : null;
-
-  if (imageUrl.origin === requestUrl.origin || imageUrl.origin === configuredOrigin) {
-    const imagePath = resolve(PUBLIC_DIRECTORY, `.${decodeURIComponent(imageUrl.pathname)}`);
+async function loadBackgroundImage(source: string): Promise<Buffer> {
+  if (source.startsWith('/') && !source.startsWith('//')) {
+    const localPath = new URL(source, 'http://localhost').pathname;
+    const imagePath = resolve(PUBLIC_DIRECTORY, `.${decodeURIComponent(localPath)}`);
     const relativePath = relative(PUBLIC_DIRECTORY, imagePath);
     if (relativePath === '..' || relativePath.startsWith(`..${sep}`) || isAbsolute(relativePath)) {
       throw new Error('La ruta de la imagen Open Graph no es válida');
@@ -55,6 +51,7 @@ async function loadBackgroundImage(source: string, requestUrl: URL): Promise<Buf
     return image;
   }
 
+  const imageUrl = new URL(source);
   if (!['http:', 'https:'].includes(imageUrl.protocol)) {
     throw new Error('La URL de la imagen de fondo debe usar HTTP o HTTPS');
   }
@@ -132,7 +129,7 @@ export async function GET(request: NextRequest) {
       console.error('No se pudo cargar la imagen de fondo Open Graph configurada:', error);
     }
 
-    const backgroundData = await loadBackgroundImage(backgroundImage, url);
+    const backgroundData = await loadBackgroundImage(backgroundImage);
     const image = await loadImage(backgroundData);
     const canvas = createCanvas(WIDTH, HEIGHT);
     const context = canvas.getContext('2d');

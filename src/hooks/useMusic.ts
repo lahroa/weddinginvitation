@@ -23,6 +23,11 @@ export function useMusic(audioSrc: string) {
     const markLoaded = () => setIsLoaded(true);
     const markPlaying = () => setIsPlaying(true);
     const markPaused = () => setIsPlaying(false);
+    const pauseWhenInactive = () => {
+      if (document.visibilityState !== 'visible' || !document.hasFocus()) {
+        audio.pause();
+      }
+    };
     const reportAudioError = () => {
       console.error(`No se pudo cargar la música de fondo: ${audioSrc}`, audio.error);
     };
@@ -45,6 +50,8 @@ export function useMusic(audioSrc: string) {
     audio.addEventListener('pause', markPaused);
     audio.addEventListener('error', reportAudioError);
     window.addEventListener('invitation:open', enableAudio);
+    window.addEventListener('blur', pauseWhenInactive);
+    document.addEventListener('visibilitychange', pauseWhenInactive);
 
     audio.src = audioSrc;
     audio.load();
@@ -59,6 +66,8 @@ export function useMusic(audioSrc: string) {
       audio.removeEventListener('pause', markPaused);
       audio.removeEventListener('error', reportAudioError);
       window.removeEventListener('invitation:open', enableAudio);
+      window.removeEventListener('blur', pauseWhenInactive);
+      document.removeEventListener('visibilitychange', pauseWhenInactive);
       if (audioRef.current === audio) audioRef.current = null;
     };
   }, [audioSrc]);
